@@ -1,9 +1,19 @@
 // ItemDetail.js
 import React from 'react';
 import { Text, View, StyleSheet, Button } from 'react-native';
+import PropTypes from 'prop-types';
 
 const ItemDetail = ({ route, navigation }) => {
-  const { item } = route.params; // Get the item passed from the previous screen
+  const { item } = route.params || {};
+
+  if (!item) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.itemDescription}>No item details available.</Text>
+        <Button title="Go Back" onPress={() => navigation.goBack()} />
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
@@ -31,7 +41,22 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#333',
     marginBottom: 20,
+    textAlign: 'center',
   },
 });
+
+ItemDetail.propTypes = {
+  route: PropTypes.shape({
+    params: PropTypes.shape({
+      item: PropTypes.shape({
+        name: PropTypes.string.isRequired,
+        description: PropTypes.string.isRequired,
+      }).isRequired,
+    }).isRequired,
+  }).isRequired,
+  navigation: PropTypes.shape({
+    goBack: PropTypes.func.isRequired,
+  }).isRequired,
+};
 
 export default ItemDetail;
