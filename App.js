@@ -2,9 +2,25 @@ import React, { useState } from 'react';
 import { Text, View, StyleSheet, TextInput, Button, FlatList, TouchableOpacity } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'; //new bottom nav bar
+
 import ItemDetail from './ItemDetail'; // Import the ItemDetail component
+import ProfilePage from './ProfilePage'; //import the profile page component
 
 const Stack = createNativeStackNavigator();
+const Tab = createBottomTabNavigator(); //new for bottom nav bar
+
+function Home() {
+  // contains the stack navigator for the home screen to allow for navigation to the ItemDetail page
+  return (
+    <Stack.Navigator initialRouteName="Home" screenOptions={{
+      headerShown: false // Removes the headers of the screens as this is a nested navigation stack
+    }}>
+      <Stack.Screen name="Home" component={HomeScreen} />
+      <Stack.Screen name="ItemDetail" component={ItemDetail} />
+    </Stack.Navigator> 
+  );
+}
 
 const HomeScreen = ({ navigation }) => {
   const [itemName, setItemName] = useState('');
@@ -58,12 +74,14 @@ const HomeScreen = ({ navigation }) => {
 };
 
 export default function App() {
+  // NEW BOTTOM TAB NAVIGATOR
+  // Only contains navigation to the home screen and a filler profile page so far
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="ItemDetail" component={ItemDetail} />
-      </Stack.Navigator>
+    <NavigationContainer>        
+      <Tab.Navigator>        
+        <Tab.Screen name="Home" component={Home} />
+        <Tab.Screen name="Profile" component={ProfilePage} />
+      </Tab.Navigator>         
     </NavigationContainer>
   );
 }
