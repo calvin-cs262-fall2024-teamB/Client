@@ -1,50 +1,126 @@
 import React, { useState } from 'react';
-import { Text, View, StyleSheet, TextInput, Button, FlatList, TouchableOpacity } from 'react-native';
+import { Text, View, StyleSheet, TextInput, Button, FlatList, TouchableOpacity, Alert } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'; //new bottom nav bar
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import ItemDetail from './ItemDetail'; // Import the ItemDetail component
-import ProfilePage from './ProfilePage'; //import the profile page component
+import ProfilePage from './ProfilePage'; // Import the profile page component
 
-const Stack = createNativeStackNavigator();
-const Tab = createBottomTabNavigator(); //new for bottom nav bar
+const RootStack = createNativeStackNavigator();
+const MainTab = createBottomTabNavigator();
+const HomeStack = createNativeStackNavigator();
 
-function Home() {
-  // contains the stack navigator for the home screen to allow for navigation to the ItemDetail page
+// Home Stack Navigator
+function HomeStackScreen() {
   return (
-    <Stack.Navigator initialRouteName="Home" screenOptions={{
-      headerShown: false // Removes the headers of the screens as this is a nested navigation stack
-    }}>
-      <Stack.Screen name="Home" component={HomeScreen} />
-      <Stack.Screen name="ItemDetail" component={ItemDetail} />
-    </Stack.Navigator> 
+    <HomeStack.Navigator initialRouteName="Home" screenOptions={{ headerShown: false }}>
+      <HomeStack.Screen name="Home" component={HomeScreen} />
+      <HomeStack.Screen name="ItemDetail" component={ItemDetail} />
+    </HomeStack.Navigator>
   );
 }
 
+// Main Tab Navigator
+function MainTabNavigator() {
+  return (
+    <MainTab.Navigator>
+      <MainTab.Screen name="Home" component={HomeStackScreen} />
+      <MainTab.Screen name="Profile" component={ProfilePage} />
+    </MainTab.Navigator>
+  );
+}
+
+// Login Screen Component
+const LoginScreen = ({ navigation, onLogin }) => {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleLogin = () => {
+    if (username.trim() && password.trim()) {
+      // Future Authenticity Check
+      onLogin();
+    } else {
+      alert('Please enter a valid username and password');
+    }
+  };
+
+  const handleCreateAccount = () => {
+    Alert.alert('Create Account', 'WIP');
+  };
+
+  const handleForgotPassword = () => {
+    Alert.alert('Forgot Password', 'WIP');
+  };
+
+  return (
+    <View style={styles.container}>
+      <Text style={styles.text}>Login</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Enter username"
+        value={username}
+        onChangeText={setUsername}
+        autoCapitalize="none"
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Enter password"
+        value={password}
+        onChangeText={setPassword}
+        secureTextEntry
+      />
+      <Button title="Login" onPress={handleLogin} />
+
+      {}
+      <View style={styles.buttonContainer}>
+        <Button 
+          title="Create Account" 
+          onPress={handleCreateAccount} 
+          color="#1E90FF"
+        />
+        <Button 
+          title="Forgot Password?" 
+          onPress={handleForgotPassword} 
+          color="#FF6347"
+        />
+      </View>
+    </View>
+  );
+};
+
+// Home Screen Component
 const HomeScreen = ({ navigation }) => {
   const [itemName, setItemName] = useState('');
   const [itemDescription, setItemDescription] = useState('');
+  const [itemLocation, setItemLocation] = useState('');
   const [itemList, setItemList] = useState([]);
 
   const handleAddItem = () => {
     if (itemName.trim() && itemDescription.trim()) {
-      const newItem = { name: itemName, description: itemDescription };
+      const newItem = { id: Date.now().toString(), name: itemName, description: itemDescription, location: itemLocation };
       setItemList((prevList) => [...prevList, newItem]);
       setItemName('');
       setItemDescription('');
+      setItemLocation('');
     } else {
       alert('Please enter both item name and description');
     }
   };
 
+  // Function to handle removing an item
+  const handleRemoveItem = (id) => {
+    setItemList((prevList) => prevList.filter((item) => item.id !== id));
+  };
+
   const renderItem = ({ item }) => (
-    <TouchableOpacity onPress={() => navigation.navigate('ItemDetail', { item })}>
-      <View style={styles.itemContainer}>
+    <View style={styles.itemContainer}>
+      <TouchableOpacity onPress={() => navigation.navigate('ItemDetail', { item })}>
         <Text style={styles.itemName}>{item.name}</Text>
-        <Text style={styles.itemDescription}>{item.description}</Text>
-      </View>
-    </TouchableOpacity>
+        <Text style={styles.itemLocation}>{item.location}</Text>
+      </TouchableOpacity>
+      <Button title="Remove" onPress={() => handleRemoveItem(item.id)} />
+    </View>
   );
 
   return (
@@ -62,30 +138,43 @@ const HomeScreen = ({ navigation }) => {
         value={itemDescription}
         onChangeText={setItemDescription}
       />
+      <TextInput
+        style={styles.input}
+        placeholder="Enter item location"
+        value={itemLocation}
+        onChangeText={setItemLocation}
+      />
       <Button title="Add Item" onPress={handleAddItem} />
       <FlatList
         data={itemList}
         renderItem={renderItem}
-        keyExtractor={(item, index) => index.toString()}
+        keyExtractor={(item) => item.id}
         style={styles.list}
       />
     </View>
   );
 };
 
+// Main App Component
 export default function App() {
-  // NEW BOTTOM TAB NAVIGATOR
-  // Only contains navigation to the home screen and a filler profile page so far
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   return (
-    <NavigationContainer>        
-      <Tab.Navigator>        
-        <Tab.Screen name="Home" component={Home} />
-        <Tab.Screen name="Profile" component={ProfilePage} />
-      </Tab.Navigator>         
+    <NavigationContainer>
+      <RootStack.Navigator screenOptions={{ headerShown: false }}>
+        {!isLoggedIn ? (
+          <RootStack.Screen name="Login">
+            {(props) => <LoginScreen {...props} onLogin={() => setIsLoggedIn(true)} />}
+          </RootStack.Screen>
+        ) : (
+          <RootStack.Screen name="Main" component={MainTabNavigator} />
+        )}
+      </RootStack.Navigator>
     </NavigationContainer>
   );
 }
 
+// Styles
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -98,6 +187,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     color: '#333',
+    marginBottom: 20,
   },
   input: {
     width: '100%',
@@ -106,6 +196,7 @@ const styles = StyleSheet.create({
     borderColor: '#ccc',
     marginBottom: 10,
     padding: 10,
+    borderRadius: 5,
   },
   list: {
     width: '100%',
@@ -115,12 +206,15 @@ const styles = StyleSheet.create({
     padding: 10,
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   itemName: {
     fontWeight: 'bold',
     fontSize: 18,
   },
-  itemDescription: {
+  itemLocation: {
     fontSize: 14,
     color: '#555',
   },
