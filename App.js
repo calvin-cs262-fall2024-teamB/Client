@@ -2,7 +2,7 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-// Importing your new pages
+// Importing new pages
 import Signup from './pages/signup';
 import Login from './pages/login';
 import Dashboard from './pages/dashboard';
