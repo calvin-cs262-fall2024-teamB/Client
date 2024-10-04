@@ -3,8 +3,8 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'reac
 
 export default function Login({ navigation }) {
     const handleLogin = () => {
-        // Navigate directly to the Dashboard
-        navigation.navigate('Dashboard'); // Ensure this matches the name of your dashboard screen
+        
+        navigation.navigate('Dashboard'); 
     };
 
     return (
