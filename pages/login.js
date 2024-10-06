@@ -2,8 +2,7 @@ import React from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
 
 export default function Login({ navigation }) {
-    const handleLogin = () => {
-        
+    const handleLogin = () => {        
         navigation.navigate('Dashboard'); 
     };
 

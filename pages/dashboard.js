@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Text, View, StyleSheet, TextInput, Button, FlatList, TouchableOpacity } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
+
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'; //new bottom nav bar
 
@@ -51,7 +51,7 @@ const HomeScreen = ({ navigation }) => {
     return (
         <View style={styles.container} >
             <Text style={styles.text}> Welcome! </Text>
-            < TextInput
+            <TextInput
                 style={styles.input}
                 placeholder="Enter item name"
                 value={itemName}
@@ -79,7 +79,6 @@ export default function Dashboard() {
         <Tab.Navigator>
             <Tab.Screen name="Home" component={HomeScreen} />
             <Tab.Screen name="Profile" component={ProfilePage} />
-            <Stack.Screen name="ItemDetail" component={ItemDetail} />
         </Tab.Navigator>
     );
 }
