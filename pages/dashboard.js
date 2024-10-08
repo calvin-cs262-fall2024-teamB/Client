@@ -6,7 +6,6 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'; //new 
 
 import ItemDetail from './ItemDetail'; // Import the ItemDetail component
 import ProfilePage from './ProfilePage'; //import the profile page component
-import HomeScreen from './HomeScreen'; 
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator(); //new for bottom nav bar
@@ -16,12 +15,64 @@ function Home() {
     return (
         <Stack.Navigator initialRouteName="Home" screenOptions={{
             headerShown: false // Removes the headers of the screens as this is a nested navigation stack
-        }}>
+        }
+        }>
             <Stack.Screen name="Home" component={HomeScreen} />
             <Stack.Screen name="ItemDetail" component={ItemDetail} />
         </Stack.Navigator>
     );
 }
+
+const HomeScreen = ({ navigation }) => {
+    const [itemName, setItemName] = useState('');
+    const [itemDescription, setItemDescription] = useState('');
+    const [itemList, setItemList] = useState([]);
+
+    const handleAddItem = () => {
+        if (itemName.trim() && itemDescription.trim()) {
+            const newItem = { name: itemName, description: itemDescription };
+            setItemList((prevList) => [...prevList, newItem]);
+            setItemName('');
+            setItemDescription('');
+        } else {
+            alert('Please enter both item name and description');
+        }
+    };
+
+    const renderItem = ({ item }) => (
+        <TouchableOpacity onPress={() => navigation.navigate('ItemDetail', { item })}>
+            <View style={styles.itemContainer}>
+                <Text style={styles.itemName}> {item.name} </Text>
+                < Text style={styles.itemDescription} > {item.description} </Text>
+            </View>
+        </TouchableOpacity>
+    );
+
+    return (
+        <View style={styles.container} >
+            <Text style={styles.text}> Welcome! </Text>
+            <TextInput
+                style={styles.input}
+                placeholder="Enter item name"
+                value={itemName}
+                onChangeText={setItemName}
+            />
+            <TextInput
+                style={styles.input}
+                placeholder="Enter item description"
+                value={itemDescription}
+                onChangeText={setItemDescription}
+            />
+            <Button title="Add Item" onPress={handleAddItem} />
+            <FlatList
+                data={itemList}
+                renderItem={renderItem}
+                keyExtractor={(item, index) => index.toString()}
+                style={styles.list}
+            />
+        </View>
+    );
+};
 
 export default function Dashboard() {
     return (
