@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
 
 export default function Login({ navigation }) {
-    const handleLogin = () => {        
-        navigation.navigate('Dashboard'); 
+    const [username, setUsername] = useState('');
+
+    const handleLogin = () => {
+        // Pass the username when navigating to the Dashboard
+        navigation.navigate('Dashboard', { username });
     };
 
     return (
@@ -15,7 +18,9 @@ export default function Login({ navigation }) {
 
             <TextInput
                 style={styles.input}
-                placeholder="Enter Your Email"
+                placeholder="Enter Your Username"
+                value={username}
+                onChangeText={setUsername}
             />
             <TextInput
                 style={styles.input}
