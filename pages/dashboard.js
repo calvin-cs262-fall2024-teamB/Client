@@ -1,84 +1,54 @@
 import React, { useState } from 'react';
-import { Text, View, StyleSheet, TextInput, Button, FlatList, TouchableOpacity } from 'react-native';
+import { Text, View, StyleSheet, TextInput, FlatList } from 'react-native';
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'; //new bottom nav bar
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import ItemDetail from './ItemDetail'; // Import the ItemDetail component
-import ProfilePage from './ProfilePage'; //import the profile page component
+import ProfilePage from './ProfilePage'; // Import the ProfilePage component
 
 const Stack = createNativeStackNavigator();
-const Tab = createBottomTabNavigator(); //new for bottom nav bar
+const Tab = createBottomTabNavigator();
 
 function Home() {
-    // contains the stack navigator for the home screen to allow for navigation to the ItemDetail page
+    // Contains the stack navigator for the home screen to allow for navigation to the ItemDetail page
     return (
-        <Stack.Navigator initialRouteName="Home" screenOptions={{
-            headerShown: false // Removes the headers of the screens as this is a nested navigation stack
-        }
-        }>
+        <Stack.Navigator initialRouteName="Home" screenOptions={{ headerShown: false }}>
             <Stack.Screen name="Home" component={HomeScreen} />
             <Stack.Screen name="ItemDetail" component={ItemDetail} />
         </Stack.Navigator>
     );
 }
 
-const HomeScreen = ({ navigation }) => {
-    const [itemName, setItemName] = useState('');
-    const [itemDescription, setItemDescription] = useState('');
-    const [itemList, setItemList] = useState([]);
 
-    const handleAddItem = () => {
-        if (itemName.trim() && itemDescription.trim()) {
-            const newItem = { name: itemName, description: itemDescription };
-            setItemList((prevList) => [...prevList, newItem]);
-            setItemName('');
-            setItemDescription('');
-        } else {
-            alert('Please enter both item name and description');
-        }
-    };
 
-    const renderItem = ({ item }) => (
-        <TouchableOpacity onPress={() => navigation.navigate('ItemDetail', { item })}>
-            <View style={styles.itemContainer}>
-                <Text style={styles.itemName}> {item.name} </Text>
-                < Text style={styles.itemDescription} > {item.description} </Text>
-            </View>
-        </TouchableOpacity>
-    );
+const HomeScreen = () => {
+    const [searchText, setSearchText] = useState('');
 
     return (
-        <View style={styles.container} >
-            <Text style={styles.text}> Welcome! </Text>
+        <View style={styles.container}>
             <TextInput
-                style={styles.input}
-                placeholder="Enter item name"
-                value={itemName}
-                onChangeText={setItemName}
+                style={styles.searchInput}
+                placeholder="Search for items..."
+                value={searchText}
+                onChangeText={setSearchText}
             />
-            <TextInput
-                style={styles.input}
-                placeholder="Enter item description"
-                value={itemDescription}
-                onChangeText={setItemDescription}
-            />
-            <Button title="Add Item" onPress={handleAddItem} />
-            <FlatList
-                data={itemList}
-                renderItem={renderItem}
-                keyExtractor={(item, index) => index.toString()}
-                style={styles.list}
-            />
+            <Text style={styles.dummyText}>Items will be added upon backend creation</Text>
         </View>
     );
 };
 
-export default function Dashboard() {
+export default function Dashboard({ route }) {
+    // Extract the username from the navigation route parameters
+    const { username } = route.params;
+
     return (
         <Tab.Navigator>
-            <Tab.Screen name="Home" component={HomeScreen} />
-            <Tab.Screen name="Profile" component={ProfilePage} />
+            <Tab.Screen name="Market" component={HomeScreen} />
+            {/* Pass the username to the ProfilePage */}
+            <Tab.Screen name="Profile">
+                {() => <ProfilePage username={username} />}
+            </Tab.Screen>
         </Tab.Navigator>
     );
 }
@@ -86,39 +56,21 @@ export default function Dashboard() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#fff',
         padding: 16,
+        backgroundColor: '#fff',
     },
-    text: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        color: '#333',
-    },
-    input: {
+    searchInput: {
         width: '100%',
         height: 40,
         borderWidth: 1,
         borderColor: '#ccc',
-        marginBottom: 10,
         padding: 10,
+        borderRadius: 8,
+        marginBottom: 20,
     },
-    list: {
-        width: '100%',
-        marginTop: 20,
-    },
-    itemContainer: {
-        padding: 10,
-        borderBottomWidth: 1,
-        borderBottomColor: '#ccc',
-    },
-    itemName: {
-        fontWeight: 'bold',
+    dummyText: {
         fontSize: 18,
-    },
-    itemDescription: {
-        fontSize: 14,
-        color: '#555',
+        textAlign: 'center',
+        color: '#888',
     },
 });
