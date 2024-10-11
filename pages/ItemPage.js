@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Text, View, StyleSheet, TextInput, Button, FlatList, TouchableOpacity } from 'react-native';
 
-const ProfilePage = ({ username }) => {  // Extract username from props
+export default ItemPage = ({ username }) => {  // Extract username from props
 
     const [itemName, setItemName] = useState('');
     const [itemDescription, setItemDescription] = useState('');
@@ -124,4 +124,3 @@ const styles = StyleSheet.create({
     },
 });
 
-export default ProfilePage;
