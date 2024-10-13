@@ -6,7 +6,7 @@ const ProfilePage = ({ username }) => {
     const [itemName, setItemName] = useState('');
     const [itemDescription, setItemDescription] = useState('');
     const [itemList, setItemList] = useState([]);
-    const [editingItem, setEditingItem] = useState(null); // New state for editing
+    const [editingItem, setEditingItem] = useState(null); // New state for editing items
     const navigation = useNavigation();
 
     const handleAddItem = () => {
