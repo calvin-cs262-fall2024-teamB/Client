@@ -1,20 +1,29 @@
 import React, { useState } from 'react';
-import { Text, View, StyleSheet, TextInput, Button, FlatList, TouchableOpacity } from 'react-native';
+import { Text, View, StyleSheet, TextInput, Button, FlatList, TouchableOpacity, Alert } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
-const ProfilePage = ({ username }) => {  // Extract username from props
-
+const ProfilePage = ({ username }) => {  
     const [itemName, setItemName] = useState('');
     const [itemDescription, setItemDescription] = useState('');
     const [itemList, setItemList] = useState([]);
+    const [editingItem, setEditingItem] = useState(null); // New state for editing
+    const navigation = useNavigation();
 
     const handleAddItem = () => {
         if (itemName.trim() && itemDescription.trim()) {
-            const newItem = {
-                id: Date.now().toString(),
-                name: itemName,
-                description: itemDescription,
-            };
-            setItemList((prevList) => [...prevList, newItem]);
+            if (editingItem) {
+                setItemList((prevList) => prevList.map(item => 
+                    item.id === editingItem.id ? { ...item, name: itemName, description: itemDescription } : item
+                ));
+                setEditingItem(null);
+            } else {
+                const newItem = {
+                    id: Date.now().toString(),
+                    name: itemName,
+                    description: itemDescription,
+                };
+                setItemList((prevList) => [...prevList, newItem]);
+            }
             setItemName('');
             setItemDescription('');
         } else {
@@ -22,18 +31,28 @@ const ProfilePage = ({ username }) => {  // Extract username from props
         }
     };
 
+    const handleEditItem = (item) => {
+        setItemName(item.name);
+        setItemDescription(item.description);
+        setEditingItem(item); // Set the item to be edited
+    };
+
+    const handleNavigateToDetail = (item) => {
+        navigation.navigate('ItemDetail', { item });
+    };
+
     const renderItem = ({ item }) => (
-        <TouchableOpacity style={styles.itemTouchable}>
+        <TouchableOpacity style={styles.itemTouchable} onPress={() => handleNavigateToDetail(item)}>
             <View style={styles.itemContainer}>
                 <Text style={styles.itemName}>{item.name}</Text>
                 <Text style={styles.itemDescription}>{item.description}</Text>
+                <Button title="Edit" onPress={() => handleEditItem(item)} />
             </View>
         </TouchableOpacity>
     );
 
     return (
         <View style={styles.container}>
-            {/* Display the passed username */}
             <Text style={styles.welcomeText}>Welcome, {username}</Text>
             <Text style={styles.subtitleText}>Item Addition</Text>
             <TextInput
@@ -48,9 +67,8 @@ const ProfilePage = ({ username }) => {  // Extract username from props
                 value={itemDescription}
                 onChangeText={setItemDescription}
             />
-            <Button title="Add Item" onPress={handleAddItem} />
+            <Button title={editingItem ? "Update Item" : "Add Item"} onPress={handleAddItem} />
 
-            {/* Display 'Your Items:' only when the list has items */}
             {itemList.length > 0 && <Text style={styles.itemsTitle}>Your Items:</Text>}
 
             <FlatList
