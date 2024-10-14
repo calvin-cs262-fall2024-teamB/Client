@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, TouchableWithoutFeedback, Keyboard } from 'react-native';
 
 export default function Login({ navigation }) {
     const [username, setUsername] = useState('');
@@ -10,34 +10,36 @@ export default function Login({ navigation }) {
     };
 
     return (
-        <View style={styles.container}>
-            <Image source={require('../assets/bomb.jpg')} style={styles.logo} />
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <View style={styles.container}>
+                <Image source={require('../assets/bomb.jpg')} style={styles.logo} />
 
-            <Text style={styles.title}>Welcome Back!</Text>
-            <Text style={styles.subtitle}>Login to continue</Text>
+                <Text style={styles.title}>Welcome Back!</Text>
+                <Text style={styles.subtitle}>Login to continue</Text>
 
-            <TextInput
-                style={styles.input}
-                placeholder="Enter Your Username"
-                value={username}
-                onChangeText={setUsername}
-            />
-            <TextInput
-                style={styles.input}
-                placeholder="Enter Your Password"
-                secureTextEntry
-            />
+                <TextInput
+                    style={styles.input}
+                    placeholder="Enter Your Username"
+                    value={username}
+                    onChangeText={setUsername}
+                />
+                <TextInput
+                    style={styles.input}
+                    placeholder="Enter Your Password"
+                    secureTextEntry
+                />
 
-            <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
-                <Text style={styles.loginButtonText}>Login</Text>
-            </TouchableOpacity>
+                <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
+                    <Text style={styles.loginButtonText}>Login</Text>
+                </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
-                <Text style={styles.signupText}>
-                    Don't have an account? <Text style={styles.signupLink}>Sign up</Text>
-                </Text>
-            </TouchableOpacity>
-        </View>
+                <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
+                    <Text style={styles.signupText}>
+                        Don't have an account? <Text style={styles.signupLink}>Sign up</Text>
+                    </Text>
+                </TouchableOpacity>
+            </View>
+        </TouchableWithoutFeedback>
     );
 }
 
