@@ -18,7 +18,7 @@ const ItemDetail = ({ route, navigation }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.itemName}>{item.name}</Text>
-      <Text style={styles.itemDescription}>{item.description}</Text>
+      <Text style={styles.itemDescription}>{item.desc}</Text>
       <Button title="Go Back" onPress={() => navigation.goBack()} />
     </View>
   );
