@@ -10,7 +10,7 @@ export default function Signup({ navigation }) {
     const handleSignup = () => {
         if (username && email && phoneNumber && password) {
             alert('Account created successfully!');
-            navigation.navigate('LocationPermission'); // Navigate to the location screen
+            navigation.navigate('LocationPermissionScreen'); // Navigate to the location screen
         } else {
             alert('Please fill in all the fields.');
         }
