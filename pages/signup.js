@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, TouchableWithoutFeedback, Keyboard } from 'react-native';
 
 export default function Signup({ navigation }) {
     const [username, setUsername] = useState('');
@@ -10,58 +10,60 @@ export default function Signup({ navigation }) {
     const handleSignup = () => {
         if (username && email && phoneNumber && password) {
             alert('Account created successfully!');
-            navigation.navigate('Login');
+            navigation.navigate('LocationPermissionScreen'); // Navigate to the location screen
         } else {
             alert('Please fill in all the fields.');
         }
     };
 
     return (
-        <View style={styles.container}>
-            <Image source={require('../assets/bomb.jpg')} style={styles.logo} />
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <View style={styles.container}>
+                <Image source={require('../assets/bomb.jpg')} style={styles.logo} />
 
-            <Text style={styles.title}>Create an Account</Text>
-            <Text style={styles.subtitle}>Connect with others today!</Text>
+                <Text style={styles.title}>Create an Account</Text>
+                <Text style={styles.subtitle}>Connect with others today!</Text>
 
-            <TextInput
-                style={styles.input}
-                placeholder="Enter Your Username"
-                value={username}
-                onChangeText={setUsername}
-            />
-            <TextInput
-                style={styles.input}
-                placeholder="Enter Your Email"
-                value={email}
-                onChangeText={setEmail}
-                keyboardType="email-address"
-                autoCapitalize="none"
-            />
-            <TextInput
-                style={styles.input}
-                placeholder="Enter Your Phone Number"
-                value={phoneNumber}
-                onChangeText={setPhoneNumber}
-                keyboardType="phone-pad"
-            />
-            <TextInput
-                style={styles.input}
-                placeholder="Enter Your Password"
-                value={password}
-                onChangeText={setPassword}
-                secureTextEntry
-            />
+                <TextInput
+                    style={styles.input}
+                    placeholder="Enter Your Username"
+                    value={username}
+                    onChangeText={setUsername}
+                />
+                <TextInput
+                    style={styles.input}
+                    placeholder="Enter Your Email"
+                    value={email}
+                    onChangeText={setEmail}
+                    keyboardType="email-address"
+                    autoCapitalize="none"
+                />
+                <TextInput
+                    style={styles.input}
+                    placeholder="Enter Your Phone Number"
+                    value={phoneNumber}
+                    onChangeText={setPhoneNumber}
+                    keyboardType="phone-pad"
+                />
+                <TextInput
+                    style={styles.input}
+                    placeholder="Enter Your Password"
+                    value={password}
+                    onChangeText={setPassword}
+                    secureTextEntry
+                />
 
-            <TouchableOpacity style={styles.signupButton} onPress={handleSignup}>
-                <Text style={styles.signupButtonText}>Sign Up</Text>
-            </TouchableOpacity>
+                <TouchableOpacity style={styles.signupButton} onPress={handleSignup}>
+                    <Text style={styles.signupButtonText}>Sign Up</Text>
+                </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-                <Text style={styles.loginText}>
-                    Already have an account? <Text style={styles.loginLink}>Login</Text>
-                </Text>
-            </TouchableOpacity>
-        </View>
+                <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+                    <Text style={styles.loginText}>
+                        Already have an account? <Text style={styles.loginLink}>Login</Text>
+                    </Text>
+                </TouchableOpacity>
+            </View>
+        </TouchableWithoutFeedback>
     );
 }
 
