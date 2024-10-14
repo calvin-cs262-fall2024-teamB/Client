@@ -34,12 +34,9 @@ export default function AddItemsScreen({ navigation }) {
     };
 
     const handleSubmit = () => {
-        if (items.length > 0) {
-            navigation.navigate('Dashboard');
-        } else {
-            alert('Please add at least one item.');
-        }
+        navigation.navigate('Dashboard');
     };
+
 
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -61,7 +58,6 @@ export default function AddItemsScreen({ navigation }) {
                     placeholderTextColor="#888"
                     multiline
                 />
-
                 <TouchableOpacity style={styles.imagePicker} onPress={pickImage}>
                     <Text style={styles.imagePickerText}>Pick an Image</Text>
                 </TouchableOpacity>
