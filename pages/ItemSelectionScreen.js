@@ -20,7 +20,7 @@ export default function ItemSelectionScreen({ navigation }) {
     const handleContinue = () => {
         const selected = Object.keys(selectedItems).filter((item) => selectedItems[item]);
         if (selected.length > 0) {
-            navigation.navigate('AddItemsScreen', { selectedItems: selected });
+            navigation.navigate('ItemPage', { selectedItems: selected });
         } else {
             alert('Please select at least one item.');
         }

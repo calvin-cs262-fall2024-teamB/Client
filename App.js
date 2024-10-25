@@ -8,7 +8,7 @@ import Login from './pages/login';
 import Dashboard from './pages/dashboard';
 import LocationPermissionScreen from './pages/LocationPermissionScreen';
 import ItemSelectionScreen from './pages/ItemSelectionScreen';
-import AddItemsScreen from './pages/AddItemsScreen';
+import ItemPage from './pages/ItemPage';
 
 
 const Stack = createNativeStackNavigator();
@@ -22,7 +22,7 @@ export default function App() {
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Dashboard" component={Dashboard} />
         <Stack.Screen name="ItemSelectionScreen" component={ItemSelectionScreen} />
-        <Stack.Screen name="AddItemsScreen" component={AddItemsScreen} />
+        <Stack.Screen name="ItemPage" component={ItemPage} />
       </Stack.Navigator>
     </NavigationContainer>
   );
