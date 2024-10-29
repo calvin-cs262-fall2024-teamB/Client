@@ -10,7 +10,8 @@ const Tab = createBottomTabNavigator();
 
 export default function Dashboard({ route }) {
     // Extract the username from the navigation route parameters
-    const { username } = route.params;
+
+    const { username } = route.params || { username: 'Guest' };
 
     return (
         <Tab.Navigator>
@@ -44,3 +45,7 @@ const styles = StyleSheet.create({
         color: '#888',
     },
 });
+
+
+
+
