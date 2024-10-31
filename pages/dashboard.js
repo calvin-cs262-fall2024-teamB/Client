@@ -10,16 +10,12 @@ const Tab = createBottomTabNavigator();
 
 export default function Dashboard({ route }) {
     // Extract the username from the navigation route parameters
-
-    const { username } = route.params || { username: 'Guest' };
+    const { username = 'Guest', initialPage = 'Market' } = route.params || {};
 
     return (
-        <Tab.Navigator>
+        <Tab.Navigator initialRouteName={initialPage}>
             <Tab.Screen name="Market" component={Market} />
-            {/* Pass the username to the ProfilePage */}
-            <Tab.Screen name="Items">
-                {() => <ItemPage username={username} />}
-            </Tab.Screen>
+            <Tab.Screen name="Items" component={ItemPage} />
         </Tab.Navigator>
     );
 }
