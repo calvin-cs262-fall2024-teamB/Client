@@ -1,18 +1,22 @@
 import React, { useState } from 'react';
-import { Text, View, StyleSheet, TextInput, Button, FlatList, TouchableOpacity, Alert } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { Text, View, StyleSheet, TextInput, Button, FlatList, TouchableOpacity } from 'react-native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
-export default ItemPage = ({ username }) => {  
+export default ItemPage = ({ username }) => {
     const [itemName, setItemName] = useState('');
     const [itemDescription, setItemDescription] = useState('');
     const [itemList, setItemList] = useState([]);
-    const [editingItem, setEditingItem] = useState(null); // New state for editing items
+    const [editingItem, setEditingItem] = useState(null);
     const navigation = useNavigation();
+    const route = useRoute();
+
+    // Check if navigated from ItemSelectionScreen
+    const fromItemSelection = route.params?.fromItemSelection;
 
     const handleAddItem = () => {
         if (itemName.trim() && itemDescription.trim()) {
             if (editingItem) {
-                setItemList((prevList) => prevList.map(item => 
+                setItemList((prevList) => prevList.map(item =>
                     item.id === editingItem.id ? { ...item, name: itemName, description: itemDescription } : item
                 ));
                 setEditingItem(null);
@@ -31,14 +35,8 @@ export default ItemPage = ({ username }) => {
         }
     };
 
-    const handleEditItem = (item) => {
-        setItemName(item.name);
-        setItemDescription(item.description);
-        setEditingItem(item); // Set the item to be edited
-    };
-
-    const handleNavigateToDetail = (item) => {
-        navigation.navigate('ItemDetail', { item });
+    const handleSkip = () => {
+        navigation.navigate('Dashboard', { username: 'Guest', initialPage: 'Items' });
     };
 
     const renderItem = ({ item }) => (
@@ -69,6 +67,13 @@ export default ItemPage = ({ username }) => {
             />
             <Button title={editingItem ? "Update Item" : "Add Item"} onPress={handleAddItem} />
 
+            {/* Conditionally render the Skip button */}
+            {fromItemSelection && (
+                <TouchableOpacity style={styles.skipButton} onPress={handleSkip}>
+                    <Text style={styles.skipButtonText}>Skip</Text>
+                </TouchableOpacity>
+            )}
+
             {itemList.length > 0 && <Text style={styles.itemsTitle}>Your Items:</Text>}
 
             <FlatList
@@ -84,93 +89,93 @@ export default ItemPage = ({ username }) => {
 
 const marketItems = [
     //Contains dummy market data
-    {   
+    {
         img: "image.jpg",
-        name: "Item1", 
-        desc: "This is the description of item 1", 
-        location: "49546", 
-        lookingFor: ["furniture", "appliances", "decor"], 
-        owner: "User1", 
+        name: "Item1",
+        desc: "This is the description of item 1",
+        location: "49546",
+        lookingFor: ["furniture", "appliances", "decor"],
+        owner: "User1",
         postedDate: "10-21-2024",
         tags: ["furniture", "electronics"]
     },
-    {   
+    {
         img: "exampleImage.jpg",
-        name: "Item2", 
-        desc: "This is the description of item 2", 
-        location: "90210", 
-        lookingFor: ["furniture", "electronics", "kitchenware"], 
-        owner: "User2", 
+        name: "Item2",
+        desc: "This is the description of item 2",
+        location: "90210",
+        lookingFor: ["furniture", "electronics", "kitchenware"],
+        owner: "User2",
         postedDate: "10-15-2024",
         tags: ["appliances", "furniture"]
     },
-    {   
+    {
         img: "anotherImage.png",
-        name: "Item3", 
-        desc: "This is the description of item 3", 
-        location: "30301", 
-        lookingFor: ["books", "furniture", "decor"], 
-        owner: "User3", 
+        name: "Item3",
+        desc: "This is the description of item 3",
+        location: "30301",
+        lookingFor: ["books", "furniture", "decor"],
+        owner: "User3",
         postedDate: "09-30-2024",
         tags: ["books", "decor"]
     },
-    {   
+    {
         img: "item4.jpg",
-        name: "Item4", 
-        desc: "This is the description of item 4", 
-        location: "60614", 
-        lookingFor: ["furniture", "decor"], 
-        owner: "User4", 
+        name: "Item4",
+        desc: "This is the description of item 4",
+        location: "60614",
+        lookingFor: ["furniture", "decor"],
+        owner: "User4",
         postedDate: "10-10-2024",
         tags: ["furniture", "toys"]
     },
-    {   
+    {
         img: "item5.jpg",
-        name: "Item5", 
-        desc: "This is the description of item 5", 
-        location: "77005", 
-        lookingFor: ["furniture", "appliances"], 
-        owner: "User5", 
+        name: "Item5",
+        desc: "This is the description of item 5",
+        location: "77005",
+        lookingFor: ["furniture", "appliances"],
+        owner: "User5",
         postedDate: "09-25-2024",
         tags: ["appliances", "kitchenware"]
     },
-    {   
+    {
         img: "item6.png",
-        name: "Item6", 
-        desc: "This is the description of item 6", 
-        location: "33101", 
-        lookingFor: ["appliances", "electronics", "furniture"], 
-        owner: "User6", 
+        name: "Item6",
+        desc: "This is the description of item 6",
+        location: "33101",
+        lookingFor: ["appliances", "electronics", "furniture"],
+        owner: "User6",
         postedDate: "10-05-2024",
         tags: ["appliances", "furniture"]
     },
-    {   
+    {
         img: "item7.png",
-        name: "Item7", 
-        desc: "This is the description of item 7", 
-        location: "80202", 
-        lookingFor: ["furniture", "decor"], 
-        owner: "User7", 
+        name: "Item7",
+        desc: "This is the description of item 7",
+        location: "80202",
+        lookingFor: ["furniture", "decor"],
+        owner: "User7",
         postedDate: "10-08-2024",
         tags: ["decor", "books"]
     },
-    {   
+    {
         img: "item8.jpg",
-        name: "Item8", 
-        desc: "This is the description of item 8", 
-        location: "98101", 
-        lookingFor: ["kitchenware", "furniture", "decor"], 
-        owner: "User8", 
+        name: "Item8",
+        desc: "This is the description of item 8",
+        location: "98101",
+        lookingFor: ["kitchenware", "furniture", "decor"],
+        owner: "User8",
         postedDate: "09-28-2024",
         tags: ["kitchenware", "furniture"]
     },
-    {   
+    {
         img: "item9.jpg",
-        name: "Item9", 
-        desc: "This is the description of item 9", 
-        location: "15213", 
-        lookingFor: ["books", "decor"], 
-        owner: "User9", 
+        name: "Item9",
+        desc: "This is the description of item 9",
+        location: "15213",
+        lookingFor: ["books", "decor"],
+        owner: "User9",
         postedDate: "10-12-2024",
         tags: ["books", "decor"]
     }
@@ -234,5 +239,20 @@ const styles = StyleSheet.create({
         marginTop: 50,
         fontSize: 16,
     },
+
+
+    skipButton: {
+        marginTop: 15,
+        padding: 10,
+        backgroundColor: '#007bff',
+        borderRadius: 8,
+        alignItems: 'center',
+    },
+    skipButtonText: {
+        color: '#fff',
+        fontSize: 16,
+        fontWeight: 'bold',
+    },
+
 });
 
