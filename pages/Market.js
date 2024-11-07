@@ -64,7 +64,7 @@ const MarketPage = ({ navigation }) => {
             <View style={styles.modalContainer}>
                 <View style={styles.modalContent}>
                     <ScrollView>
-                        <Text style={styles.filterTitle}>Select Desired Tags</Text>
+                        <Text style={styles.filterTitle}>I'm Looking For</Text>
                         {/*Creates a list of selectable text representing tags*/}
                         {allowedTags.map(tag => (
                             <TouchableOpacity
@@ -79,7 +79,7 @@ const MarketPage = ({ navigation }) => {
                             </TouchableOpacity>
                         ))}
 
-                        <Text style={styles.filterTitle}>Select Desired Looking For Categories</Text>
+                        <Text style={styles.filterTitle}>I'm Trading Away</Text>
                         {allowedTags.map(category => (
                             <TouchableOpacity
                                 key={category}
@@ -92,7 +92,7 @@ const MarketPage = ({ navigation }) => {
                                 <Text>{category}</Text>
                             </TouchableOpacity>
                         ))}
-                        <Button title="Close" onPress={() => setFilterModalVisible(false)} />
+                        <Button title="Done" onPress={() => setFilterModalVisible(false)} />
                     </ScrollView>
                 </View>
             </View>
