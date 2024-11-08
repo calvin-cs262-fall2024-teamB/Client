@@ -41,7 +41,10 @@ const MarketPage = ({ navigation }) => {
     };
 
     const renderItem = ({ item }) => (
-        <View style={styles.itemContainer}>
+        <TouchableOpacity 
+            style={styles.itemContainer} 
+            onPress={() => navigation.navigate('ItemDetail', { item })} // Navigate on container click
+        >
             <View style={styles.details}>
                 <Text style={styles.itemName}>{item.name}</Text>
                 <Text>{item.desc}</Text>
@@ -49,11 +52,10 @@ const MarketPage = ({ navigation }) => {
                 <Text>Looking For: {item.lookingFor.join(', ')}</Text>
                 <Text>Location: {item.location}</Text>
             </View>
-            <Button title="  " style={styles.itemButton} onPress={() => navigation.navigate('ItemDetail', { item })} />
-        </View>
-        
+        </TouchableOpacity>
     );
-
+    
+        
     const renderFilterDialog = () => (
         //defines the popup that allows users to select tags
         <Modal
@@ -154,7 +156,7 @@ const styles = StyleSheet.create({
         padding: 10,
         borderRadius: 8,
         marginBottom:20,
-        justifyContent: "space-between"
+        justifyContent: "space-between",
     },
     itemDetails: {
         padding: 10,
