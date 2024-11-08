@@ -66,7 +66,7 @@ const MarketPage = ({ navigation }) => {
             <View style={styles.modalContainer}>
                 <View style={styles.modalContent}>
                     <ScrollView>
-                        <Text style={styles.filterTitle}>I'm Looking For</Text>
+                        <Text style={styles.filterTitle}>Select Desired Tags</Text>
                         {/*Creates a list of selectable text representing tags*/}
                         {allowedTags.map(tag => (
                             <TouchableOpacity
@@ -77,11 +77,11 @@ const MarketPage = ({ navigation }) => {
                                 ]}
                                 onPress={() => toggleSelection(tag, setDesiredTags, desiredTags)}
                             >
-                                <Text>{tag}</Text>
+                                <Text style={desiredTags.includes(tag) ? styles.selectedText : styles.unselectedText}>{tag}</Text>
                             </TouchableOpacity>
                         ))}
 
-                        <Text style={styles.filterTitle}>I'm Trading Away</Text>
+                        <Text style={styles.filterTitle}>Select Desired Looking For Categories</Text>
                         {allowedTags.map(category => (
                             <TouchableOpacity
                                 key={category}
@@ -91,10 +91,10 @@ const MarketPage = ({ navigation }) => {
                                 ]}
                                 onPress={() => toggleSelection(category, setDesiredLookingFor, desiredLookingFor)}
                             >
-                                <Text>{category}</Text>
+                                <Text style={desiredLookingFor.includes(category) ? styles.selectedText : styles.unselectedText}>{category}</Text>
                             </TouchableOpacity>
                         ))}
-                        <Button title="Done" onPress={() => setFilterModalVisible(false)} />
+                        <Button title="Close" onPress={() => setFilterModalVisible(false)} />
                     </ScrollView>
                 </View>
             </View>
@@ -189,7 +189,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
     },
     selectedOption: {
-        backgroundColor: '#d3f3d3',
+        backgroundColor: '#1ABC9C',
     },
     unselectedOption: {
         backgroundColor: '#f3f3f3',
@@ -198,6 +198,16 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         marginTop: 20,
     },
+
+    selectedText:
+    {
+        color: '#fff',
+    },
+
+    unselectedText:
+    {
+        color: '#000',
+    }
 });
 
 const allowedTags = ["books", "decor", "kitchenware", "furniture", "appliances",  "electronics", "toys"];
