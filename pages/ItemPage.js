@@ -39,17 +39,13 @@ export default ItemPage = ({ username }) => {
         navigation.navigate('Dashboard', { username: 'Guest', initialPage: 'Items' });
     };
 
-    const handleNavigateToDetail = (item) => {
-        navigation.navigate('ItemDetail', { item: item });
-    };
-
     const renderItem = ({ item }) => (
-        <TouchableOpacity style={styles.itemContainer} onPress={() => handleNavigateToDetail(item)}>
+        <TouchableOpacity style={styles.itemTouchable} onPress={() => handleNavigateToDetail(item)}>
             <View style={styles.itemContainer}>
                 <Text style={styles.itemName}>{item.name}</Text>
                 <Text style={styles.itemDescription}>{item.description}</Text>
+                <Button title="Edit" onPress={() => handleEditItem(item)} />
             </View>
-            <Button title="Edit" onPress={() => handleEditItem(item)} />
         </TouchableOpacity>
     );
 
