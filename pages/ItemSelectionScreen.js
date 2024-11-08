@@ -20,11 +20,12 @@ export default function ItemSelectionScreen({ navigation }) {
     const handleContinue = () => {
         const selected = Object.keys(selectedItems).filter((item) => selectedItems[item]);
         if (selected.length > 0) {
-            navigation.navigate('ItemPage', { selectedItems: selected });
+            navigation.navigate('ItemPage', { username: 'Guest', fromItemSelection: true });
         } else {
             alert('Please select at least one item.');
         }
     };
+
 
 
     return (
