@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import Icon from 'react-native-vector-icons/MaterialIcons' //Used: npm install react-native-vector-icons
 
 import Market from './Market'; // Import the ItemDetail component
 import ItemPage from './ItemPage'; // Import the ProfilePage component
@@ -13,9 +14,26 @@ export default function Dashboard({ route }) {
     const { username = 'Guest', initialPage = 'Market' } = route.params || {};
 
     return (
-        <Tab.Navigator initialRouteName={initialPage}>
-            <Tab.Screen name="Market" component={Market} />
-            <Tab.Screen name="Items" component={ItemPage} />
+        <Tab.Navigator initialRouteName={initialPage}
+        screenOptions={{ 
+            tabBarStyle: styles.tabBar, 
+            tabBarActiveTintColor: '#1ABC9C',
+            tabBarInactiveTintColor: '#fff',
+        }}
+        >
+            <Tab.Screen name="Market" component={Market} 
+            options={{ 
+                tabBarIcon: 
+                ({ focused, color, size }) => 
+                <Icon focused={focused} name='store' size={size} color={color} /> 
+            }}
+            />
+
+            <Tab.Screen name="Items" component={ItemPage}
+            options={{ tabBarIcon: 
+                ({ focused, color, size }) => 
+                <Icon focused={focused} name='person' size={size} color={color} /> 
+            }}/>
         </Tab.Navigator>
     );
 }
@@ -40,6 +58,14 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         color: '#888',
     },
+
+    tabBar: { 
+        backgroundColor: '#2C3E50',
+        tabBarActiveTintColor: '#fff',
+        tabBarActiveTintColor: '#000',
+
+    },
+    
 });
 
 
