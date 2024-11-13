@@ -6,6 +6,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons' //Used: npm install r
 
 import Market from './Market'; // Import the ItemDetail component
 import ItemPage from './ItemPage'; // Import the ProfilePage component
+import MessagingPage from './MessagingPage';
 
 const Tab = createBottomTabNavigator();
 
@@ -21,6 +22,12 @@ export default function Dashboard({ route }) {
             tabBarInactiveTintColor: '#fff',
         }}
         >
+            <Tab.Screen name="Chats" component={MessagingPage}
+            options={{ tabBarIcon: 
+                ({ focused, color, size }) => 
+                <Icon focused={focused} name='chat' size={size} color={color} /> 
+            }}/>
+
             <Tab.Screen name="Market" component={Market} 
             options={{ 
                 tabBarIcon: 
@@ -34,6 +41,7 @@ export default function Dashboard({ route }) {
                 ({ focused, color, size }) => 
                 <Icon focused={focused} name='person' size={size} color={color} /> 
             }}/>
+
         </Tab.Navigator>
     );
 }
