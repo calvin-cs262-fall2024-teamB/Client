@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
-import { Text, View, StyleSheet, TextInput, FlatList, TouchableOpacity, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import {
+  Text, View, StyleSheet, TextInput, FlatList, TouchableOpacity,
+  KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard
+} from 'react-native';
 import PropTypes from 'prop-types';
 
 const ChatPage = ({ route, navigation }) => {
@@ -9,18 +12,13 @@ const ChatPage = ({ route, navigation }) => {
 
   const sendMessage = () => {
     if (inputText.trim()) {
-      setMessages([...messages, { text: inputText, sender: 'You' }]);
+      setMessages(prevMessages => [...prevMessages, { text: inputText, sender: 'You' }]);
       setInputText('');
     }
   };
 
   const renderMessage = ({ item }) => (
-    <View
-      style={[
-        styles.messageBubble,
-        item.sender === 'You' ? styles.yourMessage : styles.theirMessage,
-      ]}
-    >
+    <View style={[styles.messageBubble, item.sender === 'You' ? styles.yourMessage : styles.theirMessage]}>
       <Text style={styles.messageText}>{item.text}</Text>
     </View>
   );
@@ -28,7 +26,7 @@ const ChatPage = ({ route, navigation }) => {
   if (!chat) {
     return (
       <View style={styles.container}>
-        <Text style={styles.chatName}>No chat details available.</Text>
+        <Text style={styles.noChatText}>No chat details available.</Text>
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.goBackButton}>
           <Text style={styles.goBackText}>Go Back</Text>
         </TouchableOpacity>
@@ -42,19 +40,17 @@ const ChatPage = ({ route, navigation }) => {
       behavior={Platform.OS === 'android' ? 'padding' : 'height'}
       keyboardVerticalOffset={Platform.OS === 'android' ? 140 : 0}
     >
-      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.chatHeader}>
           <Text style={styles.chatName}>{chat.user1} and {chat.user2}</Text>
         </View>
       </TouchableWithoutFeedback>
-
       <FlatList
         data={messages}
         renderItem={renderMessage}
         keyExtractor={(item, index) => index.toString()}
         contentContainerStyle={styles.messagesContainer}
       />
-
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}
@@ -148,6 +144,11 @@ const styles = StyleSheet.create({
   goBackText: {
     color: '#fff',
     fontWeight: 'bold',
+  },
+  noChatText: {
+    textAlign: 'center',
+    fontSize: 18,
+    marginVertical: 20,
   },
 });
 
