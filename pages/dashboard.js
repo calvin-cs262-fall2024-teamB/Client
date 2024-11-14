@@ -20,6 +20,7 @@ export default function Dashboard({ route }) {
             tabBarStyle: styles.tabBar, 
             tabBarActiveTintColor: '#1ABC9C',
             tabBarInactiveTintColor: '#fff',
+            tabBarHideOnKeyboard: true
         }}
         >
             <Tab.Screen name="Chats" component={MessagingPage}

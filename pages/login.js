@@ -6,7 +6,7 @@ export default function Login({ navigation }) {
 
     const handleLogin = () => {
         // Pass the username when navigating to the Dashboard
-        navigation.navigate('Dashboard', { username });
+        navigation.replace('Dashboard', { username });
     };
 
     return (
