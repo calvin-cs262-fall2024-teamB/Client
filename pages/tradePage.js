@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
 const TradePage = ({ navigation }) => {
     const handleAccept = () => {
-        navigation.navigate('Chat', { chat: { user1: "USERNAME", user2: "ITEM OWNER" } });
+        navigation.navigate('Chat', { chat: { user1: "Landon", user2: "Musa" } });
     };
 
     const handleDecline = () => {
@@ -13,16 +13,16 @@ const TradePage = ({ navigation }) => {
     return (
         <View style={styles.container}>
             <View style={styles.tradeContainer}>
-                <Text style={styles.headerText}>USERNAME is interested in your ITEM NAME</Text>
+                <Text style={styles.headerText}>Landon is interested in your item: </Text>
                 <View style={styles.itemBox}>
-                    <Text style={styles.itemText}>Bicycle</Text>
+                    <Text style={styles.itemText}>Squishmallow</Text>
                 </View>
                 <Text style={styles.offerText}>They are offering:</Text>
                 <View style={styles.itemBox}>
-                    <Text style={styles.itemText}>Couch</Text>
+                    <Text style={styles.itemText}>Margic the Gathering Cards</Text>
                 </View>
                 <View style={styles.itemBox}>
-                    <Text style={styles.itemText}>Couch pillows</Text>
+                    <Text style={styles.itemText}>Toaster</Text>
                 </View>
                 <View style={styles.buttonContainer}>
                     <TouchableOpacity style={[styles.button, styles.chatButton]} onPress={handleAccept}>
