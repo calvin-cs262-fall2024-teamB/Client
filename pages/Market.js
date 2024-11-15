@@ -1,4 +1,4 @@
-import {View, TextInput, StyleSheet, Text, FlatList, Button, Modal, TouchableOpacity, ScrollView} from 'react-native';
+import {View, TextInput, StyleSheet, Text, FlatList, Button, Modal, TouchableOpacity, ScrollView, Image} from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React, { useState } from 'react';
 import ItemDetail from './ItemDetail';
@@ -45,7 +45,8 @@ const MarketPage = ({ navigation }) => {
             style={styles.itemContainer} 
             onPress={() => navigation.navigate('ItemDetail', { item })} // Navigate on container click
         >
-            <View style={styles.details}>
+            <Image source={item.img} style={styles.itemImage} />
+            <View style={styles.itemDetails}>
                 <Text style={styles.itemName}>{item.name}</Text>
                 <Text>{item.desc}</Text>
                 <Text>Tags: {item.tags.join(', ')}</Text>
@@ -153,13 +154,14 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         borderWidth: 1,
         borderColor: '#ccc',
-        padding: 10,
         borderRadius: 8,
         marginBottom:20,
-        justifyContent: "space-between"
+        overflow: 'hidden',
     },
     itemDetails: {
+        flex: 1,
         padding: 10,
+        flexShrink: 1,
     }, 
     itemName: {
         fontWeight: "bold"
@@ -207,100 +209,106 @@ const styles = StyleSheet.create({
     unselectedText:
     {
         color: '#000',
-    }
+    },
+
+    itemImage: {
+        width: '35%', 
+        height: "100%", 
+        resizeMode: "stretch",
+    },
 });
 
-const allowedTags = ["books", "decor", "kitchenware", "furniture", "appliances",  "electronics", "toys"];
+const allowedTags = ["books", "decor", "kitchenware", "furniture", "appliances",  "electronics", "toys", "games"];
 
 const items = [
     {   
-        img: "asdklfj",
-        name: "Item1", 
-        desc: "This is the description of item 1", 
-        location: "49546", 
-        lookingFor: ["furniture", "appliances", "decor"], 
-        owner: "User1", 
+        img: require('./item-images/squish.png'),
+        name: "Squishmallow", 
+        desc: "Destroyer of worlds but a very squishy lil guy", 
+        location: "Calvin", 
+        lookingFor: ["decor", "toys"], 
+        owner: "Landon", 
         postedDate: "10-21-2024",
-        tags: ["furniture", "electronics"]
+        tags: ["decor", "toys"]
     },
     {   
-        img: "exampleImage.jpg",
-        name: "Item2", 
-        desc: "This is the description of item 2", 
-        location: "90210", 
-        lookingFor: ["furniture", "electronics", "kitchenware"], 
+        img: require('./item-images/catan.png'),
+        name: "Catan Starfarers Boardgame", 
+        desc: "2nd Edition, perfect condition", 
+        location: "3602 Burton St SE", 
+        lookingFor: ["appliances", "electronics", "kitchenware"], 
         owner: "User2", 
         postedDate: "10-15-2024",
-        tags: ["appliances", "furniture"]
+        tags: ["games"],
     },
     {   
-        img: "anotherImage.png",
-        name: "Item3", 
-        desc: "This is the description of item 3", 
-        location: "30301", 
-        lookingFor: ["books", "furniture", "decor"], 
-        owner: "User3", 
+        img: require('./item-images/MTG.png'),
+        name: "Magic the Gathering Cards", 
+        desc: "~100 cards, good condition", 
+        location: "Calvin", 
+        lookingFor: ["books", "toys", "decor"], 
+        owner: "Musa", 
         postedDate: "09-30-2024",
-        tags: ["books", "decor"]
+        tags: ["toys"]
     },
     {   
-        img: "item4.jpg",
-        name: "Item4", 
-        desc: "This is the description of item 4", 
-        location: "60614", 
-        lookingFor: ["furniture", "decor"], 
-        owner: "User4", 
+        img: require('./item-images/totoro.png'),
+        name: "My Neighbor Totoro Poster", 
+        desc: "Unused, 20x30, unframed", 
+        location: "6071 E Paris Ave", 
+        lookingFor: ["games", "decor", "appliances"], 
+        owner: "Jack287", 
         postedDate: "10-10-2024",
-        tags: ["furniture", "toys"]
+        tags: ["decor"]
     },
     {   
-        img: "item5.jpg",
-        name: "Item5", 
-        desc: "This is the description of item 5", 
-        location: "77005", 
+        img: require('./item-images/couch.png'),
+        name: "Sleeper Couch", 
+        desc: "Queen pull out sofa, barely used", 
+        location: "Calvin", 
         lookingFor: ["furniture", "appliances"], 
-        owner: "User5", 
+        owner: "JRY48", 
         postedDate: "09-25-2024",
+        tags: ["furniture"]
+    },
+    {   
+        img: require('./item-images/toaster.png'),
+        name: "Toaster", 
+        desc: "Used stainless steel toaster oven", 
+        location: "3313 Embassy Drive", 
+        lookingFor: ["appliances", "electronics"], 
+        owner: "John", 
+        postedDate: "10-05-2024",
         tags: ["appliances", "kitchenware"]
     },
     {   
-        img: "item6.png",
-        name: "Item6", 
-        desc: "This is the description of item 6", 
-        location: "33101", 
-        lookingFor: ["appliances", "electronics", "furniture"], 
-        owner: "User6", 
-        postedDate: "10-05-2024",
-        tags: ["appliances", "furniture"]
-    },
-    {   
-        img: "item7.png",
-        name: "Item7", 
-        desc: "This is the description of item 7", 
-        location: "80202", 
-        lookingFor: ["furniture", "decor"], 
+        img: require('./item-images/cups.png'),
+        name: "Juice Cups", 
+        desc: "Comes with 1 pitcher and 4 glasses", 
+        location: "East Grand Rapids", 
+        lookingFor: ["books", "decor", "kitchenware"], 
         owner: "User7", 
         postedDate: "10-08-2024",
-        tags: ["decor", "books"]
+        tags: ["kitchenware"]
     },
     {   
-        img: "item8.jpg",
-        name: "Item8", 
-        desc: "This is the description of item 8", 
-        location: "98101", 
-        lookingFor: ["kitchenware", "furniture", "decor"], 
-        owner: "User8", 
+        img: require('./item-images/keypad.png'),
+        name: "MILITARY M1 ABBRAMS TANK FIRE CONTROL SYSTEM FRONT SWITCH PANAL KEYPAD", 
+        desc: "used", 
+        location: "9801 Burton St", 
+        lookingFor: ["kitchenware", "appliances", "decor"], 
+        owner: "Just_A_Potato", 
         postedDate: "09-28-2024",
-        tags: ["kitchenware", "furniture"]
+        tags: ["electronics"]
     },
     {   
-        img: "item9.jpg",
-        name: "Item9", 
-        desc: "This is the description of item 9", 
-        location: "15213", 
+        img: require('./item-images/bible.png'),
+        name: "Bible", 
+        desc: "1889 Swedish bible, falling apart a little but intact", 
+        location: "1521 Burton Forest", 
         lookingFor: ["books", "decor"], 
-        owner: "User9", 
+        owner: "book_lover36", 
         postedDate: "10-12-2024",
-        tags: ["books", "decor"]
+        tags: ["books"]
     }
 ];

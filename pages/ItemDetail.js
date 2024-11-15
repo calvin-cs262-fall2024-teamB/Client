@@ -1,6 +1,6 @@
 // ItemDetail.js
 import React from 'react';
-import { Text, View, StyleSheet, Button } from 'react-native';
+import { Text, View, StyleSheet, Button, Image } from 'react-native';
 import PropTypes from 'prop-types';
 
 const ItemDetail = ({ route, navigation }) => {
@@ -16,7 +16,9 @@ const ItemDetail = ({ route, navigation }) => {
   }
 
   return (
+    
     <View style={styles.container}>
+      <Image source={item.img} style={styles.itemImage} />
       <Text style={styles.itemName}>{item.name}</Text>
       <Text style={styles.itemDescription}>{item.desc}</Text>
       <Button title="Go Back" onPress={() => navigation.goBack()} />
@@ -43,6 +45,11 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     textAlign: 'center',
   },
+  itemImage: {
+    width: '90%', 
+    height: "70%", 
+    resizeMode: "stretch",
+},
 });
 
 ItemDetail.propTypes = {
