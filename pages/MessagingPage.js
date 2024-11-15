@@ -6,12 +6,8 @@ import TradePage from './tradePage';
 
 const Stack = createNativeStackNavigator();
 
-const chats = [
-    { user1: "TESTUSER1", user2: "TESTUSER2" },
-    { user1: "testuser3", user2: "testuser4" }
-];
-
-export default function MessagingPage() {
+export default MessagingPage = () => {
+    // Contains the stack navigator for the home screen to allow for navigation to the chatDetail page
     return (
         <Stack.Navigator initialRouteName="Home" screenOptions={{ headerShown: false }}>
             <Stack.Screen name="Home" component={ChatsPage} />
@@ -40,7 +36,7 @@ const ChatsPage = ({ navigation }) => {
         >
             <View style={styles.details}>
                 <Text style={styles.chatName}>{item.user1}, {item.user2}</Text>
-                <Text>Trade Items Filler</Text>
+                <Text>Chat</Text>
             </View>
         </TouchableOpacity>
     );
@@ -106,5 +102,25 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         marginTop: 20,
     },
+    selectedText:
+    {
+        color: '#fff',
+    },
+
+    unselectedText:
+    {
+        color: '#000',
+    }
 });
+
+const chats = [
+    {
+        user1: "Musa",
+        user2: "Landon"
+    },
+    {
+        user1: "Musa",
+        user2: "Jack287"
+    }
+]
 

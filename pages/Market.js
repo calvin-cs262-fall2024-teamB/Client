@@ -237,7 +237,7 @@ const items = [
         desc: "2nd Edition, perfect condition", 
         location: "3602 Burton St SE", 
         lookingFor: ["appliances", "electronics", "kitchenware"], 
-        owner: "User2", 
+        owner: "JaxSolo", 
         postedDate: "10-15-2024",
         tags: ["games"],
     },
@@ -287,7 +287,7 @@ const items = [
         desc: "Comes with 1 pitcher and 4 glasses", 
         location: "East Grand Rapids", 
         lookingFor: ["books", "decor", "kitchenware"], 
-        owner: "User7", 
+        owner: "Ems4", 
         postedDate: "10-08-2024",
         tags: ["kitchenware"]
     },
