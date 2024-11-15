@@ -1,4 +1,4 @@
-import {View, TextInput, StyleSheet, Text, FlatList, Button, Modal, TouchableOpacity, ScrollView} from 'react-native';
+import {View, TextInput, StyleSheet, Text, FlatList, Button, Modal, TouchableOpacity, ScrollView, Image} from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React, { useState } from 'react';
 import ItemDetail from './ItemDetail';
@@ -45,7 +45,8 @@ const MarketPage = ({ navigation }) => {
             style={styles.itemContainer} 
             onPress={() => navigation.navigate('ItemDetail', { item })} // Navigate on container click
         >
-            <View style={styles.details}>
+            <Image source={item.img} style={styles.itemImage} resizeMode="cover"/>
+            <View style={styles.itemDetails}>
                 <Text style={styles.itemName}>{item.name}</Text>
                 <Text>{item.desc}</Text>
                 <Text>Tags: {item.tags.join(', ')}</Text>
@@ -153,10 +154,9 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         borderWidth: 1,
         borderColor: '#ccc',
-        padding: 10,
         borderRadius: 8,
         marginBottom:20,
-        justifyContent: "space-between"
+        overflow: 'hidden',
     },
     itemDetails: {
         padding: 10,
@@ -207,14 +207,19 @@ const styles = StyleSheet.create({
     unselectedText:
     {
         color: '#000',
-    }
+    },
+
+    itemImage: {
+        width: 100, 
+        height: "100%", 
+    },
 });
 
 const allowedTags = ["books", "decor", "kitchenware", "furniture", "appliances",  "electronics", "toys"];
 
 const items = [
     {   
-        img: "asdklfj",
+        img: require('./item-images/keypad.png'),
         name: "Item1", 
         desc: "This is the description of item 1", 
         location: "49546", 
@@ -224,7 +229,7 @@ const items = [
         tags: ["furniture", "electronics"]
     },
     {   
-        img: "exampleImage.jpg",
+        img: require('./item-images/keypad.png'),
         name: "Item2", 
         desc: "This is the description of item 2", 
         location: "90210", 
@@ -234,7 +239,7 @@ const items = [
         tags: ["appliances", "furniture"]
     },
     {   
-        img: "anotherImage.png",
+        img: require('./item-images/keypad.png'),
         name: "Item3", 
         desc: "This is the description of item 3", 
         location: "30301", 
@@ -244,7 +249,7 @@ const items = [
         tags: ["books", "decor"]
     },
     {   
-        img: "item4.jpg",
+        img: require('./item-images/keypad.png'),
         name: "Item4", 
         desc: "This is the description of item 4", 
         location: "60614", 
@@ -254,7 +259,7 @@ const items = [
         tags: ["furniture", "toys"]
     },
     {   
-        img: "item5.jpg",
+        img: require('./item-images/keypad.png'),
         name: "Item5", 
         desc: "This is the description of item 5", 
         location: "77005", 
@@ -264,7 +269,7 @@ const items = [
         tags: ["appliances", "kitchenware"]
     },
     {   
-        img: "item6.png",
+        img: require('./item-images/keypad.png'),
         name: "Item6", 
         desc: "This is the description of item 6", 
         location: "33101", 
@@ -274,7 +279,7 @@ const items = [
         tags: ["appliances", "furniture"]
     },
     {   
-        img: "item7.png",
+        img: require('./item-images/keypad.png'),
         name: "Item7", 
         desc: "This is the description of item 7", 
         location: "80202", 
@@ -284,7 +289,7 @@ const items = [
         tags: ["decor", "books"]
     },
     {   
-        img: "item8.jpg",
+        img: require('./item-images/keypad.png'),
         name: "Item8", 
         desc: "This is the description of item 8", 
         location: "98101", 
@@ -294,7 +299,7 @@ const items = [
         tags: ["kitchenware", "furniture"]
     },
     {   
-        img: "item9.jpg",
+        img: require('./item-images/keypad.png'),
         name: "Item9", 
         desc: "This is the description of item 9", 
         location: "15213", 
