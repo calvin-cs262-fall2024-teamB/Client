@@ -10,7 +10,7 @@ export default function Signup({ navigation }) {
     const handleSignup = () => {
         if (username && email && phoneNumber && password) {
             alert('Account created successfully!');
-            navigation.navigate('LocationPermissionScreen'); // Navigate to the location screen
+            navigation.replace('LocationPermissionScreen'); // Navigate to the location screen
         } else {
             alert('Please fill in all the fields.');
         }
@@ -57,7 +57,7 @@ export default function Signup({ navigation }) {
                     <Text style={styles.signupButtonText}>Sign Up</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+                <TouchableOpacity onPress={() => navigation.replace('Login')}>
                     <Text style={styles.loginText}>
                         Already have an account? <Text style={styles.loginLink}>Login</Text>
                     </Text>

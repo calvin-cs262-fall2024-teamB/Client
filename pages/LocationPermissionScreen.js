@@ -11,7 +11,7 @@ export default function LocationPermissionScreen({ navigation }) {
             let { status } = await Location.requestForegroundPermissionsAsync();
             if (status !== 'granted') {
                 setErrorMsg('Permission to access location was denied');
-                navigation.navigate('ItemSelectionScreen');  // Move to next screen when permission is denied
+                navigation.replace('ItemSelectionScreen');  // Move to next screen when permission is denied
                 return;
             }
 
@@ -28,7 +28,7 @@ export default function LocationPermissionScreen({ navigation }) {
     }
 
     const handleContinue = () => {
-        navigation.navigate('ItemSelectionScreen');
+        navigation.replace('ItemSelectionScreen');
     };
 
     return (
