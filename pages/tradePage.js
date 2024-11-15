@@ -1,64 +1,7 @@
 import React from 'react';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
 const TradePage = ({ navigation }) => {
-    const styles = {
-        container: {
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "100vh",
-            backgroundColor: "#f4f4f4",
-        },
-        tradeContainer: {
-            width: "90%",
-            maxWidth: "400px",
-            padding: "20px",
-            backgroundColor: "white",
-            borderRadius: "10px",
-            boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
-            textAlign: "center",
-        },
-        headerText: {
-            fontWeight: "bold",
-            fontSize: "1.1em",
-            marginBottom: "20px",
-        },
-        itemBox: {
-            backgroundColor: "#d3d3d3",
-            padding: "15px",
-            margin: "10px 0",
-            borderRadius: "5px",
-            fontSize: "1em",
-            fontWeight: "bold",
-        },
-        offerText: {
-            marginTop: "20px",
-            fontSize: "0.9em",
-        },
-        buttonContainer: {
-            display: "flex",
-            justifyContent: "space-between",
-            marginTop: "20px",
-        },
-        button: {
-            width: "45%",
-            padding: "10px",
-            fontSize: "1em",
-            fontWeight: "bold",
-            color: "white",
-            border: "none",
-            borderRadius: "5px",
-            cursor: "pointer",
-            outline: "none",
-        },
-        chatButton: {
-            backgroundColor: "#4caf50",
-        },
-        declineButton: {
-            backgroundColor: "#d9534f",
-        },
-    };
-
     const handleAccept = () => {
         navigation.navigate('Chat', { chat: { user1: "USERNAME", user2: "ITEM OWNER" } });
     };
@@ -68,20 +11,99 @@ const TradePage = ({ navigation }) => {
     };
 
     return (
-        <div style={styles.container}>
-            <div style={styles.tradeContainer}>
-                <div style={styles.headerText}>USERNAME is interested in your ITEM NAME</div>
-                <div style={styles.itemBox}>Bicycle</div>
-                <div style={styles.offerText}>They are offering:</div>
-                <div style={styles.itemBox}>Couch</div>
-                <div style={styles.itemBox}>Couch pillows</div>
-                <div style={styles.buttonContainer}>
-                    <button style={{ ...styles.button, ...styles.chatButton }} onClick={handleAccept}>Chat</button>
-                    <button style={{ ...styles.button, ...styles.declineButton }} onClick={handleDecline}>Decline</button>
-                </div>
-            </div>
-        </div>
+        <View style={styles.container}>
+            <View style={styles.tradeContainer}>
+                <Text style={styles.headerText}>USERNAME is interested in your ITEM NAME</Text>
+                <View style={styles.itemBox}>
+                    <Text style={styles.itemText}>Bicycle</Text>
+                </View>
+                <Text style={styles.offerText}>They are offering:</Text>
+                <View style={styles.itemBox}>
+                    <Text style={styles.itemText}>Couch</Text>
+                </View>
+                <View style={styles.itemBox}>
+                    <Text style={styles.itemText}>Couch pillows</Text>
+                </View>
+                <View style={styles.buttonContainer}>
+                    <TouchableOpacity style={[styles.button, styles.chatButton]} onPress={handleAccept}>
+                        <Text style={styles.buttonText}>Chat</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={[styles.button, styles.declineButton]} onPress={handleDecline}>
+                        <Text style={styles.buttonText}>Decline</Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
+        </View>
     );
 };
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "#f4f4f4",
+    },
+    tradeContainer: {
+        width: "90%",
+        maxWidth: 400,
+        padding: 20,
+        backgroundColor: "white",
+        borderRadius: 10,
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.1,
+        shadowRadius: 8,
+        elevation: 5,
+        alignItems: "center",
+    },
+    headerText: {
+        fontWeight: "bold",
+        fontSize: 18,
+        marginBottom: 20,
+        textAlign: "center",
+    },
+    itemBox: {
+        backgroundColor: "#d3d3d3",
+        padding: 15,
+        marginVertical: 10,
+        borderRadius: 5,
+        width: "100%",
+        alignItems: "center",
+    },
+    itemText: {
+        fontSize: 16,
+        fontWeight: "bold",
+    },
+    offerText: {
+        marginTop: 20,
+        fontSize: 14,
+        textAlign: "center",
+    },
+    buttonContainer: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        marginTop: 20,
+        width: "100%",
+    },
+    button: {
+        flex: 1,
+        padding: 10,
+        marginHorizontal: 5,
+        borderRadius: 5,
+        alignItems: "center",
+    },
+    buttonText: {
+        fontSize: 16,
+        fontWeight: "bold",
+        color: "white",
+    },
+    chatButton: {
+        backgroundColor: "#4caf50",
+    },
+    declineButton: {
+        backgroundColor: "#d9534f",
+    },
+});
 
 export default TradePage;
