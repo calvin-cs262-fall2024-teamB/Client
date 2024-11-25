@@ -9,11 +9,4 @@ export default [
   {languageOptions: { globals: globals.browser }},
   pluginJs.configs.recommended,
   pluginReact.configs.flat.recommended,
-  {rules:
-    {
-      "no-undef": "warn",
-      "react/display-name": "off"
-    }
-  }
 ];
-
