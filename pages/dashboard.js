@@ -7,6 +7,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons' //Used: npm install r
 import Market from './Market'; // Import the ItemDetail component
 import ItemPage from './ItemPage'; // Import the ProfilePage component
 import MessagingPage from './MessagingPage';
+import PropTypes from 'prop-types';
 
 const Tab = createBottomTabNavigator();
 
@@ -46,6 +47,10 @@ export default function Dashboard({ route }) {
         </Tab.Navigator>
     );
 }
+
+Dashboard.propTypes = {
+    route: PropTypes.string, 
+  };
 
 const styles = StyleSheet.create({
     container: {
