@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
 
     tabBar: { 
         backgroundColor: '#2C3E50',
-        tabBarActiveTintColor: '#fff',
+        // tabBarActiveTintColor: '#fff',
         tabBarActiveTintColor: '#000',
 
     },

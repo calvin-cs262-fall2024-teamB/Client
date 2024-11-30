@@ -12,7 +12,10 @@ export default [
   {rules:
     {
       "no-undef": "warn",
-      "react/display-name": "off"
+      "react/display-name": "off",
+      "react/prop-types": "off",
+      "react/no-unescaped-entities": "off",
+      "no-unused-vars": "off"
     }
   }
 ];
