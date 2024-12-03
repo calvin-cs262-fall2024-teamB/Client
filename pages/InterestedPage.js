@@ -3,7 +3,7 @@ import { View, Text, FlatList, StyleSheet, TouchableOpacity, Image } from 'react
 
 const InterestedPage = ({ navigation, route }) => {
     const { interestedItems } = route.params;
-
+    
     const renderItem = ({ item }) => (
         <TouchableOpacity
             style={styles.itemContainer}
@@ -22,6 +22,7 @@ const InterestedPage = ({ navigation, route }) => {
 
     return (
         <View style={styles.container}>
+            
             <Text style={styles.title}>Saved Items</Text>
             {interestedItems.length > 0 ? (
                 <FlatList
@@ -32,6 +33,9 @@ const InterestedPage = ({ navigation, route }) => {
             ) : (
                 <Text style={styles.noItemsText}>No saved items yet.</Text>
             )}
+            <TouchableOpacity style={styles.topBackButton} onPress={() => navigation.goBack()}>
+            <Text style={styles.topButtonText}>Back</Text>
+            </TouchableOpacity>
         </View>
     );
 };
@@ -74,6 +78,21 @@ const styles = StyleSheet.create({
         marginTop: 20,
         fontSize: 16,
     },
+    topButtonText: {
+        fontWeight: 'bold',
+        fontSize: 16,
+        color: '#ffffff'
+      },
+      topBackButton: {
+        backgroundColor: '#1ABC9C',
+        borderRadius: 15,
+        paddingVertical: 5,
+        paddingHorizontal: 10,
+        marginTop: 4,
+        marginBottom: 3,
+        alignSelf: 'flex-start',
+        
+      },
 });
 
 export default InterestedPage;
