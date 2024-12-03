@@ -3,7 +3,7 @@ import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons' //Used: npm install react-native-vector-icons
 import { Text, View, StyleSheet, Button, TouchableOpacity, Image, ScrollView } from 'react-native';
 import ItemPage from './ItemPage';
-import SavedItemPage from './SavedItemPage'
+import InterestedPage from './InterestedPage'
 import exampleImage from '../assets/testUserPic.jpg'
 
 const ProfilePage = ({ route, navigation }) => {
@@ -31,7 +31,7 @@ const ProfilePage = ({ route, navigation }) => {
       <TouchableOpacity style={styles.myItemButton} onPress={() => navigation.navigate('ItemPage')}>
                 <Text style={styles.itemButtonText}>My Items</Text>
                 </TouchableOpacity>
-      <TouchableOpacity style={styles.myItemButton} onPress={() => navigation.navigate('SavedItemPage')}>
+      <TouchableOpacity style={styles.myItemButton} onPress={() => navigation.navigate('InterestedPage')}>
                 <Text style={styles.itemButtonText}>Saved Items</Text>
                 </TouchableOpacity>
 
