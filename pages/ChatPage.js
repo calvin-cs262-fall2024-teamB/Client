@@ -40,11 +40,16 @@ const ChatPage = ({ route, navigation }) => {
       behavior={Platform.OS === 'android' ? 'padding' : 'height'}
       keyboardVerticalOffset={Platform.OS === 'android' ? 140 : 0}
     >
+      <TouchableOpacity style={styles.topBackButton} onPress={() => navigation.goBack()}>
+        <Text style={styles.topButtonText}>Back</Text>
+      </TouchableOpacity>
+
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.chatHeader}>
           <Text style={styles.chatName}>{chat.user1} and {chat.user2}</Text>
         </View>
       </TouchableWithoutFeedback>
+      
       <FlatList
         data={messages}
         renderItem={renderMessage}
@@ -149,6 +154,21 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 18,
     marginVertical: 20,
+  },
+  topButtonText: {
+    fontWeight: 'bold',
+    fontSize: 16,
+    color: '#ffffff'
+  },
+  topBackButton: {
+    backgroundColor: '#1ABC9C',
+    borderRadius: 15,
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    marginTop: 4,
+    marginBottom: 3,
+    alignSelf: 'flex-start',
+    
   },
 });
 

@@ -41,7 +41,7 @@ const ItemDetail = ({ route, navigation }) => {
         onPress={handleInterested}
       >
         <Text style={styles.buttonText}>
-          {isInterested ? "Not Interested" : "Interested"}
+          Interested
         </Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
@@ -83,10 +83,28 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   interestedButtonActive: {
-    backgroundColor: '#ff6b6b',
+    borderWidth: 2,
+    borderColor: '#4ecdc4',
+    backgroundColor: '#4ecdc4',
+    transform: [{ scale: 1 }], 
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+    elevation: 2,
+    
+    
   },
   interestedButtonInactive: {
-    backgroundColor: '#4ecdc4',
+    borderWidth: 2,
+    borderColor: '#4ecdc4',
+    backgroundColor: '#ebfafa',
+    transform: [{ scale: 0.97 }], 
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.4,
+    shadowRadius: 4,
+    elevation: 5,
+    
+    
   },
   backButton: {
     backgroundColor: '#45aaf2',
@@ -95,10 +113,11 @@ const styles = StyleSheet.create({
     borderRadius: 25,
   },
   buttonText: {
-    color: '#ffffff',
+    color: '#000000',
     fontSize: 16,
     fontWeight: 'bold',
     textAlign: 'center',
+    
   },
 });
 

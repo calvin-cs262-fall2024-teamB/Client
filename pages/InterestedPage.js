@@ -22,7 +22,7 @@ const InterestedPage = ({ navigation, route }) => {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Interested Items</Text>
+            <Text style={styles.title}>Saved Items</Text>
             {interestedItems.length > 0 ? (
                 <FlatList
                     data={interestedItems}
@@ -30,7 +30,7 @@ const InterestedPage = ({ navigation, route }) => {
                     renderItem={renderItem}
                 />
             ) : (
-                <Text style={styles.noItemsText}>No interested items yet.</Text>
+                <Text style={styles.noItemsText}>No saved items yet.</Text>
             )}
         </View>
     );
