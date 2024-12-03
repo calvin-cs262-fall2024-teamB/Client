@@ -59,16 +59,16 @@ const styles = StyleSheet.create({
   imageContainer: {
     flex: 2,
     alignItems: 'center',
-    left: 40,
+    left: '31%',
     marginVertical: 10,
   },
 
   settingsIconContainer: {
     flex: 3,
     alignItems: 'absolute',
-    top: 40,
+    top: 0,
     right: 50,
-    left: 200,
+    left: '50%',
     //marginVertical: 20,
   },
 
