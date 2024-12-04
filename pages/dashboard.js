@@ -38,11 +38,15 @@ export default function Dashboard({ route }) {
                 <Icon focused={focused} name='chat' size={size} color={color} /> 
             }}/>
 
-            <Tab.Screen name="Profile" component={ProfilePage}
-            options={{ tabBarIcon: 
-                ({ focused, color, size }) => 
-                <Icon focused={focused} name='person' size={size} color={color} /> 
-            }}/>
+             <Tab.Screen 
+                name="Profile" 
+                component={ProfilePage}
+                initialParams={{ username }} // Pass in username here
+                options={{ 
+                    tabBarIcon: ({ focused, color, size }) => 
+                        <Icon focused={focused} name="person" size={size} color={color} />,
+                }}
+            />
 
         </Tab.Navigator>
     );
