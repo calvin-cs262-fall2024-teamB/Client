@@ -36,12 +36,12 @@ const ItemDetail = ({ route, navigation }) => {
       <TouchableOpacity
         style={[
           styles.interestedButton,
-          isInterested ? styles.interestedButtonActive : styles.interestedButtonInactive
+          false ? styles.interestedButtonActive : styles.interestedButtonInactive /* change to change if offer is made */
         ]}
-        onPress={handleInterested}
+        onPress={() => navigation.navigate('InitiateTrade' , { item: item })} 
       >
         <Text style={styles.buttonText}>
-          Interested
+          Make Trade Offer
         </Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
@@ -91,8 +91,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 3,
     elevation: 2,
-    
-    
   },
   interestedButtonInactive: {
     borderWidth: 2,

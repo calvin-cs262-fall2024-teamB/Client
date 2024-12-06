@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import ItemDetail from './ItemDetail';
 import { Ionicons } from '@expo/vector-icons';
 import InterestedPage from './InterestedPage';
+import InitiateTrade from './InitiateTrade';
 
 const Stack = createNativeStackNavigator();
 
@@ -11,6 +12,8 @@ export default Market = () => {
     // Contains the stack navigator for the home screen to allow for navigation to the ItemDetail page
 
     const [interestedItems, setInterestedItems] = useState([]);
+    const [offeredItems, setOfferedItems] = useState([]);
+
     const toggleInterested = (item) => {
         setInterestedItems(prevItems =>
             prevItems.some(i => i.name === item.name)
@@ -19,14 +22,25 @@ export default Market = () => {
         );
     };
 
+    const markOfferMade = (item) => {
+        setOfferedItems(prevOfferedItems => 
+            prevOfferedItems.includes(item.name) 
+                ? prevOfferedItems 
+                : [...prevOfferedItems, item.name] 
+        );
+    };
+
+
     return (
         <Stack.Navigator initialRouteName="Home" screenOptions={{ headerShown: false }}>
             <Stack.Screen name="Home">
                 {(props) => (
                     <MarketPage
                         {...props}
+                        offeredItems={offeredItems}
                         interestedItems={interestedItems}
                         toggleInterested={toggleInterested}
+                        setOfferedItems={setOfferedItems}
                     />
                 )}
             </Stack.Screen>
@@ -58,11 +72,19 @@ export default Market = () => {
                     />
                 )}
             </Stack.Screen>
+            <Stack.Screen name="InitiateTrade">
+                {(props) => (
+                    <InitiateTrade
+                        {...props}
+                        markOfferMade={markOfferMade}
+                    />
+                )}
+                </Stack.Screen>
         </Stack.Navigator>
     );
 }
 
-const MarketPage = ({ navigation, interestedItems, toggleInterested }) => {
+const MarketPage = ({ navigation, interestedItems, offeredItems, toggleInterested }) => {
     const [searchText, setSearchText] = useState('');
     const [desiredLookingFor, setDesiredLookingFor] = useState(["furniture", "appliances", "electronics"]);
     const [desiredTags, setDesiredTags] = useState(["decor", "kitchenware"]);
@@ -102,6 +124,7 @@ const MarketPage = ({ navigation, interestedItems, toggleInterested }) => {
                 <Text>Tags: {item.tags.join(', ')}</Text>
                 <Text>Looking For: {item.lookingFor.join(', ')}</Text>
                 <Text>Location: {item.location}</Text>
+                {offeredItems.includes(item.name) && <Text style={styles.offerText} >Offer Made!</Text>}
             </View>
             <TouchableOpacity
                 style={styles.savedIcon}
@@ -164,6 +187,9 @@ const MarketPage = ({ navigation, interestedItems, toggleInterested }) => {
     )
 
     const filteredItems = filterItems(items, desiredLookingFor, desiredTags, searchText);
+
+   
+
     return (
         <View style={styles.container}>
             <View style={styles.header}>
@@ -330,6 +356,9 @@ const styles = StyleSheet.create({
         fontSize: 12,
         fontWeight: 'bold',
     },
+    offerText: {
+        color: '#28a745',
+    }
 });
 
 const allowedTags = ["books", "decor", "kitchenware", "furniture", "appliances", "electronics", "toys", "games"];

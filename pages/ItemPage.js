@@ -51,8 +51,7 @@ export default ItemPage = ({ username }) => {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.welcomeText}>Welcome, {username}</Text>
-            <Text style={styles.subtitleText}>Item Addition</Text>
+            <Text style={styles.welcomeText}>Item Addition</Text>
             <TextInput
                 style={styles.input}
                 placeholder="Enter item name"
@@ -190,7 +189,7 @@ const styles = StyleSheet.create({
     welcomeText: {
         fontSize: 24,
         fontWeight: 'bold',
-        marginBottom: 10,
+        marginBottom: 20,
         alignSelf: 'center',
     },
     subtitleText: {
