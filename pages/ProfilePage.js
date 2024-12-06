@@ -7,7 +7,7 @@ import InterestedPage from './InterestedPage'
 import exampleImage from '../assets/testUserPic.jpg'
 
 const ProfilePage = ({ route, navigation }) => {
-  const {} = route.params || {};
+  const { username } = route.params || {};
 
   return (
 
@@ -25,7 +25,7 @@ const ProfilePage = ({ route, navigation }) => {
       </View>
 
       
-      <Text style={styles.profileFiller}>Jane Doe </Text> {/* Need to add username source from database */}
+      <Text style={styles.profileFiller}>{ username } </Text> {/* Need to add username source from database */}
 
       
       <TouchableOpacity style={styles.myItemButton} onPress={() => navigation.navigate('ItemPage')}>
