@@ -35,7 +35,7 @@ export default function Login({ navigation }) {
 
                 <TouchableOpacity onPress={() => navigation.replace('Signup')}>
                     <Text style={styles.signupText}>
-                        Don't have an account? <Text style={styles.signupLink}>Sign up</Text>
+                        Don&apos;t have an account? <Text style={styles.signupLink}>Sign up</Text>
                     </Text>
                 </TouchableOpacity>
             </View>
