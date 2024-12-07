@@ -17,23 +17,26 @@ const ProfilePage = ({ route, navigation }) => {
           <Image source={exampleImage} style={styles.userImage} /> {/* Need to add profile picture from database */} </View>
 
         <View style={styles.settingsIconContainer}>
-        <TouchableOpacity onPress={() => navigation.navigate('ItemPage')} > 
-          <Icon name="settings" size={30} color="#000" /> 
-        </TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate('ItemPage')} >
+            <Icon name="settings" size={30} color="#000" />
+          </TouchableOpacity>
         </View>
 
       </View>
 
-      
-      <Text style={styles.profileFiller}>{ username } </Text> {/* Need to add username source from database */}
 
-      
-      <TouchableOpacity style={styles.myItemButton} onPress={() => navigation.navigate('ItemPage')}>
-                <Text style={styles.itemButtonText}>My Items</Text>
-                </TouchableOpacity>
+      <Text style={styles.profileFiller}>{username} </Text> {/* Need to add username source from database */}
+
+
+      <TouchableOpacity
+        style={styles.myItemButton}
+        onPress={() => navigation.navigate('ItemPage', { fromProfile: true })}>
+        <Text style={styles.itemButtonText}>My Items</Text>
+      </TouchableOpacity>
       <TouchableOpacity style={styles.myItemButton} onPress={() => navigation.navigate('InterestedPage')}>
-                <Text style={styles.itemButtonText}>Saved Items</Text>
-                </TouchableOpacity>
+        <Text style={styles.itemButtonText}>Saved Items</Text>
+      </TouchableOpacity>
+
 
     </ScrollView>
   );
@@ -87,18 +90,18 @@ const styles = StyleSheet.create({
     backgroundColor: '#06ACB7',
     borderRadius: 10,
     alignItems: 'center',
-},
+  },
 
-itemButtonText: {
-  color: '#fff',
+  itemButtonText: {
+    color: '#fff',
 
-},
+  },
 
-userImage: {
-  width: 100,
-  height: 100,
-  borderRadius: 50,
-}
+  userImage: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+  }
 
 });
 

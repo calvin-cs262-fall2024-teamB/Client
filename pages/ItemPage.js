@@ -1,35 +1,92 @@
-import React, { useState } from 'react';
-import { Text, View, StyleSheet, TextInput, Button, FlatList, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { Text, View, StyleSheet, TextInput, Button, FlatList, TouchableOpacity, Image } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as ImagePicker from 'expo-image-picker';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 export default ItemPage = ({ username }) => {
     const [itemName, setItemName] = useState('');
     const [itemDescription, setItemDescription] = useState('');
     const [itemList, setItemList] = useState([]);
     const [editingItem, setEditingItem] = useState(null);
+    const [image, setImage] = useState(null);
     const navigation = useNavigation();
     const route = useRoute();
-
     // Check if navigated from ItemSelectionScreen
     const fromItemSelection = route.params?.fromItemSelection;
+    const fromProfile = route.params?.fromProfile;
 
-    const handleAddItem = () => {
+    useEffect(() => {
+        const loadItems = async () => {
+            if (fromProfile) {
+                await loadSavedItems();
+            } else {
+                setItemList(marketItems);
+            }
+        };
+        loadItems();
+    }, [fromProfile]);
+
+    const loadSavedItems = async () => {
+        try {
+            const savedItems = await AsyncStorage.getItem('savedItems');
+            if (savedItems !== null) {
+                setItemList(JSON.parse(savedItems));
+            } else {
+                setItemList([]);
+            }
+        } catch (error) {
+            console.error('Error loading saved items:', error);
+            setItemList([]);
+        }
+    };
+
+    const pickImage = async () => {
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
+        });
+
+        if (result.assets && result.assets.length > 0) {
+            setImage(result.assets[0].uri);
+        } else {
+            console.error('No image selected');
+        }
+    };
+
+
+    const handleAddItem = async () => {
         if (itemName.trim() && itemDescription.trim()) {
+            let updatedList;
             if (editingItem) {
-                setItemList((prevList) => prevList.map(item =>
-                    item.id === editingItem.id ? { ...item, name: itemName, description: itemDescription } : item
-                ));
+                updatedList = itemList.map(item =>
+                    item.id === editingItem.id ? { ...item, name: itemName, description: itemDescription, image } : item
+                );
                 setEditingItem(null);
             } else {
                 const newItem = {
                     id: Date.now().toString(),
                     name: itemName,
                     description: itemDescription,
+                    image,
                 };
-                setItemList((prevList) => [...prevList, newItem]);
+                updatedList = [...itemList, newItem];
             }
+            setItemList(updatedList);
             setItemName('');
             setItemDescription('');
+            setImage(null);
+
+            if (fromProfile) {
+                try {
+                    await AsyncStorage.setItem('savedItems', JSON.stringify(updatedList));
+                } catch (error) {
+                    console.error('Error saving items:', error);
+                }
+            }
         } else {
             alert('Please enter both item name and description');
         }
@@ -39,15 +96,46 @@ export default ItemPage = ({ username }) => {
         navigation.navigate('Dashboard', { username: 'Guest', initialPage: 'Items' });
     };
 
+    const handleEditItem = (item) => {
+        setEditingItem(item);
+        setItemName(item.name);
+        setItemDescription(item.description);
+        setImage(item.image);
+    };
+
+    const handleDeleteItem = async (id) => {
+        const updatedList = itemList.filter(item => item.id !== id);
+        setItemList(updatedList);
+
+        if (fromProfile) {
+            try {
+                await AsyncStorage.setItem('savedItems', JSON.stringify(updatedList));
+            } catch (error) {
+                console.error('Error deleting item:', error);
+            }
+        }
+    };
+
+
     const renderItem = ({ item }) => (
-        <TouchableOpacity style={styles.itemTouchable} onPress={() => handleNavigateToDetail(item)}>
-            <View style={styles.itemContainer}>
+        <View style={styles.itemContainer}>
+            {item.image && <Image source={{ uri: item.image }} style={styles.itemImage} />}
+            <View style={styles.itemDetails}>
                 <Text style={styles.itemName}>{item.name}</Text>
                 <Text style={styles.itemDescription}>{item.description}</Text>
-                <Button title="Edit" onPress={() => handleEditItem(item)} />
             </View>
-        </TouchableOpacity>
+            <View style={styles.iconContainer}>
+                <TouchableOpacity onPress={() => handleEditItem(item)} style={styles.icon}>
+                    <Icon name="edit" size={24} color="#007bff" />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => handleDeleteItem(item.id)} style={styles.icon}>
+                    <Icon name="trash" size={24} color="#dc3545" />
+                </TouchableOpacity>
+            </View>
+        </View>
     );
+
+
 
     return (
         <View style={styles.container}>
@@ -64,9 +152,16 @@ export default ItemPage = ({ username }) => {
                 value={itemDescription}
                 onChangeText={setItemDescription}
             />
-            <Button title={editingItem ? "Update Item" : "Add Item"} onPress={handleAddItem} />
+            <View style={styles.buttonGroup}>
+                <TouchableOpacity style={styles.button} onPress={pickImage}>
+                    <Text style={styles.buttonText}>Pick an image</Text>
+                </TouchableOpacity>
+                {image && <Image source={{ uri: image }} style={styles.previewImage} />}
+                <TouchableOpacity style={styles.button} onPress={handleAddItem}>
+                    <Text style={styles.buttonText}>{editingItem ? "Update Item" : "Add Item"}</Text>
+                </TouchableOpacity>
+            </View>
 
-            {/* Conditionally render the Skip button */}
             {fromItemSelection && (
                 <TouchableOpacity style={styles.skipButton} onPress={handleSkip}>
                     <Text style={styles.skipButtonText}>Skip</Text>
@@ -87,7 +182,6 @@ export default ItemPage = ({ username }) => {
 };
 
 const marketItems = [
-    //Contains dummy market data
     {
         img: "image.jpg",
         name: "Item1",
@@ -184,74 +278,89 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 20,
-        backgroundColor: '#fff',
+        backgroundColor: '#f8f9fa',
     },
     welcomeText: {
         fontSize: 24,
         fontWeight: 'bold',
         marginBottom: 20,
-        alignSelf: 'center',
-    },
-    subtitleText: {
-        fontSize: 18,
-        fontWeight: 'bold',
-        marginBottom: 20,
-        alignSelf: 'center',
+        color: '#343a40',
+        textAlign: 'center',
     },
     input: {
         height: 50,
-        borderColor: '#ccc',
+        borderColor: '#ced4da',
         borderWidth: 1,
         borderRadius: 8,
-        paddingHorizontal: 15,
-        marginBottom: 15,
+        paddingHorizontal: 16,
+        marginBottom: 16,
         fontSize: 16,
+        backgroundColor: '#fff',
+    },
+    buttonContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginBottom: 20,
+    },
+    button: {
+        backgroundColor: '#3498db',
+        borderRadius: 12,
+        paddingVertical: 12,
+        marginBottom: 16,
+    },
+    buttonText: {
+        color: '#fff',
+        fontSize: 16,
+        fontWeight: 'bold',
+        textAlign: 'center',
     },
     list: {
         marginTop: 20,
     },
-    itemTouchable: {
-        borderBottomWidth: 1,
-        borderBottomColor: '#eee',
-    },
     itemContainer: {
-        paddingVertical: 15,
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: '#fff',
+        borderRadius: 8,
+        padding: 16,
+        marginBottom: 12,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 4,
+        elevation: 3,
+    },
+    itemImage: {
+        width: 60,
+        height: 60,
+        borderRadius: 30,
+        marginRight: 16,
+    },
+    itemDetails: {
+        flex: 1,
     },
     itemName: {
         fontSize: 18,
         fontWeight: '600',
+        color: '#343a40',
+        marginBottom: 4,
     },
     itemDescription: {
         fontSize: 14,
-        color: '#555',
-        marginTop: 5,
+        color: '#6c757d',
     },
-    itemsTitle: {
-        fontSize: 20,
-        fontWeight: 'bold',
-        marginTop: 20,
-        alignSelf: 'flex-start',
-    },
-    emptyListText: {
-        textAlign: 'center',
-        color: '#999',
-        marginTop: 50,
-        fontSize: 16,
-    },
-
-
-    skipButton: {
-        marginTop: 15,
-        padding: 10,
-        backgroundColor: '#007bff',
-        borderRadius: 8,
+    iconContainer: {
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
         alignItems: 'center',
     },
-    skipButtonText: {
-        color: '#fff',
-        fontSize: 16,
-        fontWeight: 'bold',
+    icon: {
+        marginLeft: 15,
     },
-
+    previewImage: {
+        width: '100%',
+        height: 200,
+        borderRadius: 8,
+        marginBottom: 16,
+    },
 });
-
