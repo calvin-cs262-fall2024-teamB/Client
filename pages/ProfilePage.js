@@ -5,6 +5,7 @@ import { Text, View, StyleSheet, Button, TouchableOpacity, Image, ScrollView } f
 import ItemPage from './ItemPage';
 import InterestedPage from './InterestedPage'
 import exampleImage from '../assets/testUserPic.jpg'
+import SettingsScreen from './settingsPage'
 
 const ProfilePage = ({ route, navigation }) => {
   const { username } = route.params || {};
@@ -17,7 +18,7 @@ const ProfilePage = ({ route, navigation }) => {
           <Image source={exampleImage} style={styles.userImage} /> {/* Need to add profile picture from database */} </View>
 
         <View style={styles.settingsIconContainer}>
-          <TouchableOpacity onPress={() => navigation.navigate('ItemPage')} >
+          <TouchableOpacity onPress={() => navigation.navigate('SettingsScreen')} >
             <Icon name="settings" size={30} color="#000" />
           </TouchableOpacity>
         </View>
