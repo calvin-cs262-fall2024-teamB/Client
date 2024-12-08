@@ -1,22 +1,25 @@
 import React, { useState } from 'react';
 import { View, Text, Switch, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 
+/* THERE IS CURRENTLY NO ROUTING FOR SETTINGS PAGE ITEMS */
+
 const SettingsScreen = () => {
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  {/* const [isDarkMode, setIsDarkMode] = useState(false); */}
   const [isNotificationsEnabled, setIsNotificationsEnabled] = useState(true);
 
-  const toggleDarkMode = () => setIsDarkMode(previousState => !previousState);
+  {/* const toggleDarkMode = () => setIsDarkMode(previousState => !previousState); */}
   const toggleNotifications = () => setIsNotificationsEnabled(previousState => !previousState);
 
   return (
     <ScrollView style={styles.container}>
       <Text style={styles.header}>Settings</Text>
 
-      {/* Dark Mode Toggle */}
+      {/* Dark Mode Toggle - not implemented
       <View style={styles.settingRow}>
         <Text style={styles.settingText}>Dark Mode</Text>
         <Switch value={isDarkMode} onValueChange={toggleDarkMode} />
       </View>
+      */}
 
       {/* Notifications Toggle */}
       <View style={styles.settingRow}>

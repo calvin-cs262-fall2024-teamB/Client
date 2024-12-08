@@ -9,6 +9,7 @@ import Dashboard from './pages/dashboard';
 import LocationPermissionScreen from './pages/LocationPermissionScreen';
 import ItemSelectionScreen from './pages/ItemSelectionScreen';
 import ItemPage from './pages/ItemPage';
+import SettingsScreen from './pages/settingsPage';
 
 import ItemDetail from './pages/ItemDetail'
 
@@ -25,6 +26,7 @@ export default function App() {
         <Stack.Screen name="ItemSelectionScreen" component={ItemSelectionScreen} />
         <Stack.Screen name="ItemPage" component={ItemPage} />
         <Stack.Screen name="ItemDetail" component={ItemDetail} />
+        <Stack.Screen name="SettingsScreen" component={SettingsScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
