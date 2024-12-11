@@ -6,8 +6,13 @@ export default function Signup({ navigation }) {
     const [email, setEmail] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
     const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmed] = useState('');
 
     const handleSignup = () => {
+        if (password !== confirmPassword){
+            alert('Passwords do not match')
+            return;
+        }
         if (username && email && phoneNumber && password) {
             alert('Account created successfully!');
             navigation.replace('LocationPermissionScreen'); // Navigate to the location screen
@@ -50,6 +55,13 @@ export default function Signup({ navigation }) {
                     placeholder="Enter Your Password"
                     value={password}
                     onChangeText={setPassword}
+                    secureTextEntry
+                />
+                <TextInput
+                    style={styles.input}
+                    placeholder="Confirm Your Password"
+                    value={confirmPassword}
+                    onChangeText={setConfirmed}
                     secureTextEntry
                 />
 

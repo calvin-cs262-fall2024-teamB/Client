@@ -26,7 +26,7 @@ export default function App() {
         <Stack.Screen name="ItemSelectionScreen" component={ItemSelectionScreen} />
         <Stack.Screen name="ItemPage" component={ItemPage} />
         <Stack.Screen name="ItemDetail" component={ItemDetail} />
-        <Stack.Screen name="SettingsScreen" component={SettingsScreen} />
+        <Stack.Screen name="Settings Screen" component={SettingsScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

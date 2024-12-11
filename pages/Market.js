@@ -5,6 +5,7 @@ import ItemDetail from './ItemDetail';
 import { Ionicons } from '@expo/vector-icons';
 import InterestedPage from './InterestedPage';
 import InitiateTrade from './InitiateTrade';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const Stack = createNativeStackNavigator();
 
@@ -86,8 +87,8 @@ export default Market = () => {
 
 const MarketPage = ({ navigation, interestedItems, offeredItems, toggleInterested }) => {
     const [searchText, setSearchText] = useState('');
-    const [desiredLookingFor, setDesiredLookingFor] = useState(["furniture", "appliances", "electronics"]);
-    const [desiredTags, setDesiredTags] = useState(["decor", "kitchenware"]);
+    const [desiredLookingFor, setDesiredLookingFor] = useState(["books", "decor", "kitchenware", "furniture", "appliances", "electronics", "toys", "games"]);
+    const [desiredTags, setDesiredTags] = useState(["books", "decor", "kitchenware", "furniture", "appliances", "electronics", "toys", "games"]);
     const [filterModalVisible, setFilterModalVisible] = useState(false);
 
 
@@ -193,6 +194,19 @@ const MarketPage = ({ navigation, interestedItems, offeredItems, toggleIntereste
     return (
         <View style={styles.container}>
             <View style={styles.header}>
+                <View style={styles.headerButtons}>
+                    <TouchableOpacity
+                        style={styles.savedItems}
+                        onPress={() => navigation.navigate('InterestedPage', { interestedItems })}
+                    >
+                        <Text style={styles.interestedCountText}>Saved Items: {interestedItems.length}</Text>
+                    </TouchableOpacity>
+                    <View style={styles.iconContainer}>
+                        <TouchableOpacity onPress={() => navigation.navigate('ItemPage', { fromProfile: true })}>
+                            <Icon name="plus" size={24} color="#06ACB7" />
+                        </TouchableOpacity>
+                    </View>
+                </View>
                 <View style={styles.searchContainer}>
                     <TextInput
                         style={styles.searchInput}
@@ -200,12 +214,6 @@ const MarketPage = ({ navigation, interestedItems, offeredItems, toggleIntereste
                         value={searchText}
                         onChangeText={setSearchText}
                     />
-                    <TouchableOpacity
-                        style={styles.interestedCount}
-                        onPress={() => navigation.navigate('InterestedPage', { interestedItems })}
-                    >
-                        <Text style={styles.interestedCountText}>Saved Items: {interestedItems.length}</Text>
-                    </TouchableOpacity>
                 </View>
                 <Button title="Filter" onPress={() => setFilterModalVisible(true)} />
             </View>
@@ -315,16 +323,16 @@ const styles = StyleSheet.create({
     },
     interestedCount: {
         position: 'absolute',
-        top: -30,
+        top: -20,
         right: 10,
-        backgroundColor: '#1ABC9C',
+        backgroundColor: '#ffffff',
         borderRadius: 15,
         paddingVertical: 5,
         paddingHorizontal: 10,
         zIndex: 1,
     },
     interestedCountText: {
-        color: 'white',
+        color: 'black',
         fontSize: 12,
         fontWeight: 'bold',
     }, header: {
@@ -342,15 +350,6 @@ const styles = StyleSheet.create({
         padding: 10,
         borderRadius: 8,
     },
-    interestedCount: {
-        position: 'absolute',
-        top: -5,
-        right: 10,
-        backgroundColor: '#1ABC9C',
-        borderRadius: 15,
-        paddingVertical: 5,
-        paddingHorizontal: 10,
-    },
     interestedCountText: {
         color: 'white',
         fontSize: 12,
@@ -358,7 +357,27 @@ const styles = StyleSheet.create({
     },
     offerText: {
         color: '#28a745',
-    }
+    },
+    savedItems: {
+        position: 'absolute', 
+        backgroundColor: '#06ACB7',
+        borderRadius: 15,
+        paddingVertical: 5,
+        marginTop: -8,
+        paddingHorizontal: 10,
+       
+        
+    },
+    iconContainer: {
+        flex: 1,
+        marginTop: -8,
+        justifyContent: 'flex-end',
+        marginLeft:325,
+        alignItems: 'center',
+    },
+    headerButtons: {
+        flexDirection: 'row',
+    },
 });
 
 const allowedTags = ["books", "decor", "kitchenware", "furniture", "appliances", "electronics", "toys", "games"];

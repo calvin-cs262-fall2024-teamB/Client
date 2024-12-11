@@ -3,7 +3,7 @@ import { View, Text, FlatList, StyleSheet, TouchableOpacity, Image } from 'react
 
 const InterestedPage = ({ navigation, route }) => {
     const { interestedItems } = route.params;
-    
+
     const renderItem = ({ item }) => (
         <TouchableOpacity
             style={styles.itemContainer}
