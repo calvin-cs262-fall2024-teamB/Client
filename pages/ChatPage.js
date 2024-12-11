@@ -25,7 +25,6 @@ const ChatPage = ({ route, navigation }) => {
 
   const handleAccept = () => {
     alert('Trade Offer Accepted!')
-    navigation.pop(2);
   }
 
   if (!chat) {
