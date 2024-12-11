@@ -5,6 +5,7 @@ import ItemDetail from './ItemDetail';
 import { Ionicons } from '@expo/vector-icons';
 import InterestedPage from './InterestedPage';
 import InitiateTrade from './InitiateTrade';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const Stack = createNativeStackNavigator();
 
@@ -176,6 +177,19 @@ const MarketPage = ({ navigation, interestedItems, offeredItems, toggleIntereste
     return (
         <View style={styles.container}>
             <View style={styles.header}>
+                <View style={styles.headerButtons}>
+                    <TouchableOpacity
+                        style={styles.savedItems}
+                        onPress={() => navigation.navigate('InterestedPage', { interestedItems })}
+                    >
+                        <Text style={styles.interestedCountText}>Saved Items: {interestedItems.length}</Text>
+                    </TouchableOpacity>
+                    <View style={styles.iconContainer}>
+                        <TouchableOpacity onPress={() => navigation.navigate('ItemPage', { fromProfile: true })}>
+                            <Icon name="plus" size={24} color="#06ACB7" />
+                        </TouchableOpacity>
+                    </View>
+                </View>
                 <TextInput
                     style={styles.searchInput}
                     placeholder="Search for items..."
@@ -216,7 +230,7 @@ const MarketPage = ({ navigation, interestedItems, offeredItems, toggleIntereste
                     </TouchableOpacity>
                 ))}
             </View>
-
+    
             <Text style={styles.sectionTitle}>Filter by Looking For Tags:</Text>
             <View style={styles.tagsGrid}>
                 {ALLOWED_TAGS.map(tag => (
@@ -289,11 +303,53 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     tagButtonSelected: {
-        backgroundColor: '#1ABC9C',
-        borderColor: '#1ABC9C',
+        backgroundColor: '#06ACB7',
+        borderColor: '#06ACB7',
     },
     tagText: {
         color: '#000',
     },
-
+    interestedCountText: {
+        color: 'white',
+        fontSize: 12,
+        fontWeight: 'bold',
+    },
+    offerText: {
+        color: '#28a745',
+    },
+    savedItems: {
+        position: 'absolute', 
+        backgroundColor: '#06ACB7',
+        borderRadius: 15,
+        paddingVertical: 5,
+        marginTop: -8,
+        paddingHorizontal: 10,
+    },
+    iconContainer: {
+        flex: 1,
+        marginTop: -8,
+        justifyContent: 'flex-end',
+        marginLeft:325,
+        alignItems: 'center',
+        marginBottom: 8,
+    },
+    headerButtons: {
+        flexDirection: 'row',
+    },
+    header: {
+        marginBottom: 16,
+        position: 'relative',
+    },
+    searchContainer: {
+        position: 'relative',
+        marginBottom: 10,
+        paddingTop: 30,
+    },
+    searchInput: {
+        height: 40,
+        borderWidth: 1,
+        borderColor: '#ccc',
+        padding: 10,
+        borderRadius: 8,
+    },
 });
