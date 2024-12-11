@@ -54,7 +54,7 @@ const InitiateTrade = ({ navigation, route, markOfferMade }) => {
                 <TouchableOpacity style={styles.topBackButton} onPress={() => navigation.goBack()}>
                     <Text style={styles.topButtonText}>Back</Text>
                 </TouchableOpacity>
-                {pressed && ( <TouchableOpacity style={styles.topDoneButton} onPress={() => navigation.goBack()}>
+                {pressed && ( <TouchableOpacity style={styles.topDoneButton} onPress={() => navigation.pop(2)}>
                     <Text style={styles.topButtonText}>Done</Text>
                 </TouchableOpacity>
                 )}
@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
         marginBottom: 16, 
     },
     topBackButton: {
-        backgroundColor: '#1ABC9C',
+        backgroundColor: '#06ACB7',
         borderRadius: 15,
         paddingVertical: 5,
         paddingHorizontal: 10,
@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
         alignSelf: 'flex-start',
     },
     topDoneButton: {
-        backgroundColor: '#1ABC9C',
+        backgroundColor: '#06ACB7',
         borderRadius: 15,
         paddingVertical: 5,
         paddingHorizontal: 10,
@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
     },
     offerButton: {
         borderWidth: 2,
-        borderColor: '#4ecdc4',
+        borderColor: '#06ACB7',
         backgroundColor: '#ebfafa',
         transform: [{ scale: 0.97 }], 
         shadowOffset: { width: 0, height: 2 },
@@ -147,8 +147,8 @@ const styles = StyleSheet.create({
     },
     offerButtonPressed: {
         borderWidth: 2,
-        borderColor: '#4ecdc4',
-        backgroundColor: '#4ecdc4',
+        borderColor: '#06ACB7',
+        backgroundColor: '#06ACB7',
         transform: [{ scale: 1 }], 
         shadowOffset: { width: 0, height: 1 },
         shadowOpacity: 0.2,
@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
         borderColor: '#ccc',
     },
     selectedItem: {
-        backgroundColor: '#1ABC9C',
+        backgroundColor: '#06ACB7',
     },
     unselectedItem: {
         backgroundColor: '#f3f3f3',

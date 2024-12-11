@@ -18,7 +18,7 @@ const ProfilePage = ({ route, navigation }) => {
           <Image source={exampleImage} style={styles.userImage} /> {/* Need to add profile picture from database */} </View>
 
         <View style={styles.settingsIconContainer}>
-          <TouchableOpacity onPress={() => navigation.navigate('SettingsScreen')} >
+          <TouchableOpacity onPress={() => navigation.navigate('Settings Screen')} >
             <Icon name="settings" size={30} color="#000" />
           </TouchableOpacity>
         </View>
@@ -34,7 +34,7 @@ const ProfilePage = ({ route, navigation }) => {
         onPress={() => navigation.navigate('ItemPage', { fromProfile: true })}>
         <Text style={styles.itemButtonText}>My Items</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.myItemButton} onPress={() => navigation.navigate('InterestedPage')}>
+      <TouchableOpacity style={styles.myItemButton} onPress={() => navigation.navigate('InterestedPage',)}>
         <Text style={styles.itemButtonText}>Saved Items</Text>
       </TouchableOpacity>
 

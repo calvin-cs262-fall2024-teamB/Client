@@ -23,6 +23,10 @@ const ChatPage = ({ route, navigation }) => {
     </View>
   );
 
+  const handleAccept = () => {
+    alert('Trade Offer Accepted!')
+  }
+
   if (!chat) {
     return (
       <View style={styles.container}>
@@ -40,9 +44,14 @@ const ChatPage = ({ route, navigation }) => {
       behavior={Platform.OS === 'android' ? 'padding' : 'height'}
       keyboardVerticalOffset={Platform.OS === 'android' ? 140 : 0}
     >
-      <TouchableOpacity style={styles.topBackButton} onPress={() => navigation.goBack()}>
-        <Text style={styles.topButtonText}>Back</Text>
-      </TouchableOpacity>
+      <View style={styles.headerButtons}>
+        <TouchableOpacity style={styles.topBackButton} onPress={() => navigation.goBack()}>
+          <Text style={styles.topButtonText}>Back</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.topAcceptButton} onPress={handleAccept}>
+          <Text style={styles.topButtonText}>Accept Offer</Text>
+        </TouchableOpacity>
+      </View>
 
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.chatHeader}>
@@ -80,7 +89,7 @@ const styles = StyleSheet.create({
   },
   chatHeader: {
     padding: 16,
-    backgroundColor: '#1ABC9C',
+    backgroundColor: '#06ACB7',
     alignItems: 'center',
   },
   chatName: {
@@ -129,7 +138,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   sendButton: {
-    backgroundColor: '#1ABC9C',
+    backgroundColor: '#06ACB7',
     paddingVertical: 10,
     paddingHorizontal: 18,
     borderRadius: 30,
@@ -143,7 +152,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     paddingVertical: 10,
     paddingHorizontal: 20,
-    backgroundColor: '#1ABC9C',
+    backgroundColor: '#06ACB7',
     borderRadius: 5,
   },
   goBackText: {
@@ -161,14 +170,25 @@ const styles = StyleSheet.create({
     color: '#ffffff'
   },
   topBackButton: {
-    backgroundColor: '#1ABC9C',
+    backgroundColor: '#06ACB7',
     borderRadius: 15,
     paddingVertical: 5,
     paddingHorizontal: 10,
     marginTop: 4,
     marginBottom: 3,
     alignSelf: 'flex-start',
-    
+  },
+  headerButtons: {
+    flexDirection: 'row',
+  },
+  topAcceptButton: {
+    backgroundColor: '#06ACB7',
+    borderRadius: 15,
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    marginTop: 4,
+    marginBottom: 3,
+    marginLeft: 215,
   },
 });
 

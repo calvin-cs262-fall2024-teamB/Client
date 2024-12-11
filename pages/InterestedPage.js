@@ -3,7 +3,7 @@ import { View, Text, FlatList, StyleSheet, TouchableOpacity, Image } from 'react
 
 const InterestedPage = ({ navigation, route }) => {
     const { interestedItems } = route.params;
-    
+
     const renderItem = ({ item }) => (
         <TouchableOpacity
             style={styles.itemContainer}
@@ -84,14 +84,13 @@ const styles = StyleSheet.create({
         color: '#ffffff'
       },
       topBackButton: {
-        backgroundColor: '#1ABC9C',
+        backgroundColor: '#06ACB7',
         borderRadius: 15,
         paddingVertical: 5,
         paddingHorizontal: 10,
         marginTop: 4,
         marginBottom: 3,
         alignSelf: 'flex-start',
-        
       },
 });
 

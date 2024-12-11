@@ -11,7 +11,8 @@ const ItemDetail = ({ route, navigation }) => {
       setIsInterested(interestedItems.some(i => i.name === item.name));
     }
   }, [interestedItems, item]);
-
+  
+  
   if (!item) {
     return (
       <View style={styles.container}>
@@ -27,6 +28,7 @@ const ItemDetail = ({ route, navigation }) => {
     setIsInterested(!isInterested);
     toggleInterested(item);
   };
+
 
   return (
     <View style={styles.container}>
@@ -44,8 +46,14 @@ const ItemDetail = ({ route, navigation }) => {
           Make Trade Offer
         </Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-        <Text style={styles.buttonText}>Go Back</Text>
+      <TouchableOpacity
+        style={[
+          styles.interestedButton,
+          isInterested ? styles.interestedButtonActive : styles.interestedButtonInactive 
+        ]}
+        onPress={handleInterested}
+      >
+        <Text style={styles.buttonText}>{isInterested ? 'Item Saved' : 'Save'}</Text> 
       </TouchableOpacity>
     </View>
   );
@@ -84,8 +92,8 @@ const styles = StyleSheet.create({
   },
   interestedButtonActive: {
     borderWidth: 2,
-    borderColor: '#4ecdc4',
-    backgroundColor: '#4ecdc4',
+    borderColor: '#06ACB7',
+    backgroundColor: '#06ACB7',
     transform: [{ scale: 1 }], 
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.2,
@@ -94,15 +102,13 @@ const styles = StyleSheet.create({
   },
   interestedButtonInactive: {
     borderWidth: 2,
-    borderColor: '#4ecdc4',
+    borderColor: '#06ACB7',
     backgroundColor: '#ebfafa',
     transform: [{ scale: 0.97 }], 
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.4,
     shadowRadius: 4,
     elevation: 5,
-    
-    
   },
   backButton: {
     backgroundColor: '#45aaf2',
@@ -115,7 +121,20 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     textAlign: 'center',
-    
+  },
+  topButtonText: {
+    fontWeight: 'bold',
+    fontSize: 16,
+    color: '#ffffff'
+  },
+  topBackButton: {
+    backgroundColor: '#1ABC9C',
+    borderRadius: 15,
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    marginTop: 4,
+    marginBottom: 3,
+    alignSelf: 'flex-start',
   },
 });
 
@@ -125,7 +144,6 @@ ItemDetail.propTypes = {
     params: PropTypes.shape({
       item: PropTypes.shape({
         name: PropTypes.string.isRequired,
-        description: PropTypes.string.isRequired,
       }).isRequired,
       toggleInterested: PropTypes.func.isRequired,
       interestedItems: PropTypes.array.isRequired,
