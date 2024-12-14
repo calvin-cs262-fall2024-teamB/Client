@@ -7,6 +7,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons' //Used: npm install r
 import Market from './Market'; // Import the ItemDetail component
 import ProfilePage from './ProfilePage'; // Import the ProfilePage component
 import MessagingPage from './MessagingPage';
+import PropTypes from 'prop-types';
 
 const Tab = createBottomTabNavigator();
 
@@ -53,6 +54,10 @@ export default function Dashboard({ route }) {
     );
 }
 
+Dashboard.propTypes = {
+    route: PropTypes.string, 
+  };
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -76,7 +81,7 @@ const styles = StyleSheet.create({
 
     tabBar: { 
         backgroundColor: '#2C3E50',
-        tabBarActiveTintColor: '#fff',
+        // tabBarActiveTintColor: '#fff',
         tabBarActiveTintColor: '#000',
 
     },

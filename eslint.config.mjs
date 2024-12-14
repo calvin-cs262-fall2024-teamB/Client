@@ -9,4 +9,18 @@ export default [
   {languageOptions: { globals: globals.browser }},
   pluginJs.configs.recommended,
   pluginReact.configs.flat.recommended,
+<<<<<<< HEAD
 ];
+=======
+  {rules:
+    {
+      "no-undef": "warn",
+      "react/display-name": "off",
+      "react/prop-types": "off",
+      "react/no-unescaped-entities": "off",
+      "no-unused-vars": "off"
+    }
+  }
+];
+
+>>>>>>> origin/feature/eslint

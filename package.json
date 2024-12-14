@@ -38,6 +38,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.24.0",
+<<<<<<< HEAD
     "@eslint/eslintrc": "^3.2.0",
     "@eslint/js": "^9.17.0",
     "eslint": "^8.57.1",
@@ -50,6 +51,12 @@
     "eslint-plugin-react": "^7.37.2",
     "eslint-plugin-react-hooks": "^4.6.2",
     "globals": "^15.13.0"
+=======
+    "@eslint/js": "^9.15.0",
+    "eslint": "^9.15.0",
+    "eslint-plugin-react": "^7.37.2",
+    "globals": "^15.12.0"
+>>>>>>> origin/feature/eslint
   },
   "private": true
 }
