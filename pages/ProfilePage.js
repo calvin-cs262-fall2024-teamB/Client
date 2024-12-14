@@ -1,9 +1,7 @@
 // ProfilePage.js
 import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons' //Used: npm install react-native-vector-icons
-import { Text, View, StyleSheet, Button, TouchableOpacity, Image, ScrollView } from 'react-native';
-import ItemPage from './ItemPage';
-import InterestedPage from './InterestedPage'
+import { Text, View, StyleSheet, TouchableOpacity, Image, ScrollView } from 'react-native';
 import exampleImage from '../assets/testUserPic.jpg'
 
 const ProfilePage = ({ route, navigation }) => {

@@ -1,10 +1,8 @@
-import { View, StyleSheet, Text, FlatList, Modal, TouchableOpacity, ScrollView, Image } from 'react-native';
+import { View, StyleSheet, Text, FlatList, TouchableOpacity, ScrollView } from 'react-native';
 import React, { useState } from 'react';
 
-
-
 const items = [
-    { name: "Squishmallow"},
+    { name: "Squishmallow" },
     { name: "Juice Cups" },
 ];
 
@@ -17,7 +15,7 @@ const InitiateTrade = ({ navigation, route, markOfferMade }) => {
     const handleOffer = () => {
         if (selectedItems.length === 0) {
             alert("No items selected");
-            return; 
+            return;
         }
         markOfferMade(item);
         setPressed(true);
@@ -46,15 +44,15 @@ const InitiateTrade = ({ navigation, route, markOfferMade }) => {
                 {item.name}
             </Text>
         </TouchableOpacity>
-        
+
     );
-    return(
+    return (
         <View style={styles.container}>
             <View style={styles.topButtonsContainer}>
                 <TouchableOpacity style={styles.topBackButton} onPress={() => navigation.goBack()}>
                     <Text style={styles.topButtonText}>Back</Text>
                 </TouchableOpacity>
-                {pressed && ( <TouchableOpacity style={styles.topDoneButton} onPress={() => navigation.goBack()}>
+                {pressed && (<TouchableOpacity style={styles.topDoneButton} onPress={() => navigation.goBack()}>
                     <Text style={styles.topButtonText}>Done</Text>
                 </TouchableOpacity>
                 )}
@@ -71,13 +69,13 @@ const InitiateTrade = ({ navigation, route, markOfferMade }) => {
                     />
                 </ScrollView>
             </View>
-            <TouchableOpacity 
-                style={[styles.offerButton, pressed && styles.offerButtonPressed]} 
+            <TouchableOpacity
+                style={[styles.offerButton, pressed && styles.offerButtonPressed]}
                 onPress={handleOffer}
             >
-            <Text style={styles.buttonText}>
-                {buttonText}
-            </Text>
+                <Text style={styles.buttonText}>
+                    {buttonText}
+                </Text>
             </TouchableOpacity>
         </View>
     )
@@ -89,7 +87,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         alignItems: 'center',
         padding: 16,
-      },
+    },
     title: {
         fontSize: 30,
         fontWeight: 'bold',
@@ -101,10 +99,10 @@ const styles = StyleSheet.create({
         color: '#ffffff'
     },
     topButtonsContainer: {
-        flexDirection: 'row', 
-        width: '100%', 
-        justifyContent: 'space-between', 
-        marginBottom: 16, 
+        flexDirection: 'row',
+        width: '100%',
+        justifyContent: 'space-between',
+        marginBottom: 16,
     },
     topBackButton: {
         backgroundColor: '#1ABC9C',
@@ -135,7 +133,7 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderColor: '#4ecdc4',
         backgroundColor: '#ebfafa',
-        transform: [{ scale: 0.97 }], 
+        transform: [{ scale: 0.97 }],
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.4,
         shadowRadius: 4,
@@ -149,7 +147,7 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderColor: '#4ecdc4',
         backgroundColor: '#4ecdc4',
-        transform: [{ scale: 1 }], 
+        transform: [{ scale: 1 }],
         shadowOffset: { width: 0, height: 1 },
         shadowOpacity: 0.2,
         shadowRadius: 3,
