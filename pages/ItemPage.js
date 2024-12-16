@@ -1,366 +1,297 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, StyleSheet, TextInput, Button, FlatList, TouchableOpacity, Image } from 'react-native';
+import {
+  Text,
+  View,
+  StyleSheet,
+  TextInput,
+  ScrollView,
+  FlatList,
+  TouchableOpacity,
+  Image,
+  Modal,
+} from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as ImagePicker from 'expo-image-picker';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-export default ItemPage = ({ username }) => {
-    const [itemName, setItemName] = useState('');
-    const [itemDescription, setItemDescription] = useState('');
-    const [itemList, setItemList] = useState([]);
-    const [editingItem, setEditingItem] = useState(null);
-    const [image, setImage] = useState(null);
-    const navigation = useNavigation();
-    const route = useRoute();
-    // Check if navigated from ItemSelectionScreen
-    const fromItemSelection = route.params?.fromItemSelection;
-    const fromProfile = route.params?.fromProfile;
+const ItemPage = () => {
+  const [itemName, setItemName] = useState('');
+  const [itemDescription, setItemDescription] = useState('');
+  const [itemLocation, setItemLocation] = useState({ lat: 43.012, lon: -85.641 });
+  const [image, setImage] = useState(null);
+  const [itemTags, setItemTags] = useState([]);
+  const [lookingForTags, setLookingForTags] = useState([]);
+  const [tagModalVisible, setTagModalVisible] = useState(false);
+  const [lookingForModalVisible, setLookingForModalVisible] = useState(false);
+  const [itemList, setItemList] = useState([]);
+  const [editingItem, setEditingItem] = useState(null);
 
-    useEffect(() => {
-        const loadItems = async () => {
-            if (fromProfile) {
-                await loadSavedItems();
-            } else {
-                setItemList(marketItems);
-            }
-        };
-        loadItems();
-    }, [fromProfile]);
+  const navigation = useNavigation();
+  const route = useRoute();
+  const { fromProfile } = route.params || {};
 
-    const loadSavedItems = async () => {
+  const ALLOWED_TAGS = ['books', 'decor', 'kitchenware', 'furniture', 'appliances', 'electronics', 'toys', 'games'];
+
+  useEffect(() => {
+    const loadItems = async () => {
+      if (fromProfile) {
         try {
-            const savedItems = await AsyncStorage.getItem('savedItems');
-            if (savedItems !== null) {
-                setItemList(JSON.parse(savedItems));
-            } else {
-                setItemList([]);
-            }
+          const savedItems = await AsyncStorage.getItem('savedItems');
+          if (savedItems) setItemList(JSON.parse(savedItems));
         } catch (error) {
-            console.error('Error loading saved items:', error);
-            setItemList([]);
+          console.error('Error loading saved items:', error);
         }
+      }
+    };
+    loadItems();
+  }, [fromProfile]);
+
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+    if (result.assets && result.assets.length > 0) {
+      setImage(result.assets[0].uri);
+    }
+  };
+
+  const toggleTagSelection = (tag, selectedTags, setSelectedTags) => {
+    if (selectedTags.includes(tag)) {
+      setSelectedTags(selectedTags.filter((t) => t !== tag));
+    } else {
+      setSelectedTags([...selectedTags, tag]);
+    }
+  };
+
+  const handleAddItem = async () => {
+    if (!itemName.trim() || !itemDescription.trim()) {
+      alert('Please enter both item name and description');
+      return;
+    }
+
+    // Construct the item data to send to the server
+    const newItem = {
+      ownerAccount: 3, // Replace with the actual user ID
+      name: itemName,
+      description: itemDescription,
+      location: `${itemLocation.lat}, ${itemLocation.lon}`,
+      itemTags: itemTags,
+      lookingForTags: lookingForTags,
+      imageData: image ? [{ data: image, description: "Image description" }] : [], // Adjust as needed
     };
 
-    const pickImage = async () => {
-        let result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.Images,
-            allowsEditing: true,
-            aspect: [4, 3],
-            quality: 1,
-        });
+    try {
+      // Make the POST request using fetch
+      const response = await fetch('https://bombasticweb-dmenc3dmg9hhcxgk.canadaeast-01.azurewebsites.net/items', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newItem), // Convert the item object to a JSON string
+      });
 
-        if (result.assets && result.assets.length > 0) {
-            setImage(result.assets[0].uri);
-        } else {
-            console.error('No image selected');
-        }
-    };
+      if (!response.ok) {
+        // Handle errors based on the HTTP response
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to add item');
+      }
 
+      const responseData = await response.json(); // Parse the response JSON
 
-    const handleAddItem = async () => {
-        if (itemName.trim() && itemDescription.trim()) {
-            let updatedList;
-            if (editingItem) {
-                updatedList = itemList.map(item =>
-                    item.id === editingItem.id ? { ...item, name: itemName, description: itemDescription, image } : item
-                );
-                setEditingItem(null);
-            } else {
-                const newItem = {
-                    id: Date.now().toString(),
-                    name: itemName,
-                    description: itemDescription,
-                    image,
-                };
-                updatedList = [...itemList, newItem];
-            }
-            setItemList(updatedList);
-            setItemName('');
-            setItemDescription('');
-            setImage(null);
+      // Handle success
+      alert('Item added successfully!');
+      setItemName('');
+      setItemDescription('');
+      setImage(null);
+      setItemTags([]);
+      setLookingForTags([]);
+      setItemList([...itemList, responseData]); // Add the new item to the local list
 
-            if (fromProfile) {
-                try {
-                    await AsyncStorage.setItem('savedItems', JSON.stringify(updatedList));
-                } catch (error) {
-                    console.error('Error saving items:', error);
-                }
-            }
-        } else {
-            alert('Please enter both item name and description');
-        }
-    };
+      if (fromProfile) {
+        // Save the updated list to AsyncStorage
+        await AsyncStorage.setItem('savedItems', JSON.stringify([...itemList, responseData]));
+      }
+    } catch (error) {
+      // Handle errors
+      console.error('Error adding item:', error);
+      alert('Failed to add item. Please try again later.');
+    }
+  };
 
-    const handleSkip = () => {
-        navigation.navigate('Dashboard', { username: 'Guest', initialPage: 'Items' });
-    };
-
-    const handleEditItem = (item) => {
-        setEditingItem(item);
-        setItemName(item.name);
-        setItemDescription(item.description);
-        setImage(item.image);
-    };
-
-    const handleDeleteItem = async (id) => {
-        const updatedList = itemList.filter(item => item.id !== id);
-        setItemList(updatedList);
-
-        if (fromProfile) {
-            try {
-                await AsyncStorage.setItem('savedItems', JSON.stringify(updatedList));
-            } catch (error) {
-                console.error('Error deleting item:', error);
-            }
-        }
-    };
-
-
-    const renderItem = ({ item }) => (
-        <View style={styles.itemContainer}>
-            {item.image && <Image source={{ uri: item.image }} style={styles.itemImage} />}
-            <View style={styles.itemDetails}>
-                <Text style={styles.itemName}>{item.name}</Text>
-                <Text style={styles.itemDescription}>{item.description}</Text>
-            </View>
-            <View style={styles.iconContainer}>
-                <TouchableOpacity onPress={() => handleEditItem(item)} style={styles.icon}>
-                    <Icon name="edit" size={24} color="#007bff" />
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => handleDeleteItem(item.id)} style={styles.icon}>
-                    <Icon name="trash" size={24} color="#dc3545" />
-                </TouchableOpacity>
-            </View>
-        </View>
-    );
-
-
-
-    return (
-        <View style={styles.container}>
-            <Text style={styles.welcomeText}>Item Addition</Text>
-            <TextInput
-                style={styles.input}
-                placeholder="Enter item name"
-                value={itemName}
-                onChangeText={setItemName}
-            />
-            <TextInput
-                style={styles.input}
-                placeholder="Enter item description"
-                value={itemDescription}
-                onChangeText={setItemDescription}
-            />
-            <View style={styles.buttonGroup}>
-                <TouchableOpacity style={styles.button} onPress={pickImage}>
-                    <Text style={styles.buttonText}>Pick an image</Text>
-                </TouchableOpacity>
-                {image && <Image source={{ uri: image }} style={styles.previewImage} />}
-                <TouchableOpacity style={styles.button} onPress={handleAddItem}>
-                    <Text style={styles.buttonText}>{editingItem ? "Update Item" : "Add Item"}</Text>
-                </TouchableOpacity>
-            </View>
-
-            {fromItemSelection && (
-                <TouchableOpacity style={styles.skipButton} onPress={handleSkip}>
-                    <Text style={styles.skipButtonText}>Skip</Text>
-                </TouchableOpacity>
+  const renderTagModal = (visible, onClose, tags, selectedTags, setSelectedTags) => (
+    <Modal animationType="slide" transparent visible={visible} onRequestClose={onClose}>
+      <View style={styles.modalContainer}>
+        <View style={styles.modalContent}>
+          <Text style={styles.modalTitle}>Select Tags</Text>
+          <FlatList
+            data={tags}
+            keyExtractor={(item) => item}
+            renderItem={({ item }) => (
+              <TouchableOpacity
+                style={[styles.tagButton, selectedTags.includes(item) && styles.tagButtonSelected]}
+                onPress={() => toggleTagSelection(item, selectedTags, setSelectedTags)}
+              >
+                <Text style={selectedTags.includes(item) ? styles.tagTextSelected : styles.tagText}>{item}</Text>
+              </TouchableOpacity>
             )}
-
-            {itemList.length > 0 && <Text style={styles.itemsTitle}>Your Items:</Text>}
-
-            <FlatList
-                data={itemList}
-                renderItem={renderItem}
-                keyExtractor={(item) => item.id}
-                style={styles.list}
-                ListEmptyComponent={<Text style={styles.emptyListText}>No items added yet.</Text>}
-            />
+          />
+          <TouchableOpacity onPress={onClose} style={styles.closeButton}>
+            <Icon name="times" size={24} color="#dc3545" />
+          </TouchableOpacity>
         </View>
-    );
+      </View>
+    </Modal>
+  );
+
+  return (
+    <ScrollView contentContainerStyle={styles.scrollContainer}>
+      <View style={styles.container}>
+        <Text style={styles.welcomeText}>Item Addition</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Enter item name"
+          value={itemName}
+          onChangeText={setItemName}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Enter item description"
+          value={itemDescription}
+          onChangeText={setItemDescription}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Selected Item Tags"
+          value={itemTags.join(', ')}
+          editable={false}
+        />
+        <TouchableOpacity style={styles.button} onPress={() => setTagModalVisible(true)}>
+          <Text style={styles.buttonText}>Select Item Tags</Text>
+        </TouchableOpacity>
+        <TextInput
+          style={styles.input}
+          placeholder="Selected Looking For Tags"
+          value={lookingForTags.join(', ')}
+          editable={false}
+        />
+        <TouchableOpacity style={styles.button} onPress={() => setLookingForModalVisible(true)}>
+          <Text style={styles.buttonText}>Select Looking For Tags</Text>
+        </TouchableOpacity>
+        <TextInput
+          style={styles.input}
+          placeholder="Enter item location (lat, lon)"
+          value={`${itemLocation.lat}, ${itemLocation.lon}`}
+          onChangeText={(text) => {
+            const [lat, lon] = text.split(',').map((v) => parseFloat(v.trim()));
+            if (!isNaN(lat) && !isNaN(lon)) {
+              setItemLocation({ lat, lon });
+            }
+          }}
+        />
+        <TouchableOpacity style={styles.button} onPress={pickImage}>
+          <Text style={styles.buttonText}>Pick an Image</Text>
+        </TouchableOpacity>
+        {image && <Image source={{ uri: image }} style={styles.previewImage} />}
+        <TouchableOpacity style={styles.button} onPress={handleAddItem}>
+          <Text style={styles.buttonText}>{editingItem ? 'Update Item' : 'Add Item'}</Text>
+        </TouchableOpacity>
+
+        {renderTagModal(tagModalVisible, () => setTagModalVisible(false), ALLOWED_TAGS, itemTags, setItemTags)}
+        {renderTagModal(
+          lookingForModalVisible,
+          () => setLookingForModalVisible(false),
+          ALLOWED_TAGS,
+          lookingForTags,
+          setLookingForTags
+        )}
+      </View>
+    </ScrollView>
+  );
 };
 
-const marketItems = [
-    {
-        img: "image.jpg",
-        name: "Item1",
-        desc: "This is the description of item 1",
-        location: "49546",
-        lookingFor: ["furniture", "appliances", "decor"],
-        owner: "User1",
-        postedDate: "10-21-2024",
-        tags: ["furniture", "electronics"]
-    },
-    {
-        img: "exampleImage.jpg",
-        name: "Item2",
-        desc: "This is the description of item 2",
-        location: "90210",
-        lookingFor: ["furniture", "electronics", "kitchenware"],
-        owner: "User2",
-        postedDate: "10-15-2024",
-        tags: ["appliances", "furniture"]
-    },
-    {
-        img: "anotherImage.png",
-        name: "Item3",
-        desc: "This is the description of item 3",
-        location: "30301",
-        lookingFor: ["books", "furniture", "decor"],
-        owner: "User3",
-        postedDate: "09-30-2024",
-        tags: ["books", "decor"]
-    },
-    {
-        img: "item4.jpg",
-        name: "Item4",
-        desc: "This is the description of item 4",
-        location: "60614",
-        lookingFor: ["furniture", "decor"],
-        owner: "User4",
-        postedDate: "10-10-2024",
-        tags: ["furniture", "toys"]
-    },
-    {
-        img: "item5.jpg",
-        name: "Item5",
-        desc: "This is the description of item 5",
-        location: "77005",
-        lookingFor: ["furniture", "appliances"],
-        owner: "User5",
-        postedDate: "09-25-2024",
-        tags: ["appliances", "kitchenware"]
-    },
-    {
-        img: "item6.png",
-        name: "Item6",
-        desc: "This is the description of item 6",
-        location: "33101",
-        lookingFor: ["appliances", "electronics", "furniture"],
-        owner: "User6",
-        postedDate: "10-05-2024",
-        tags: ["appliances", "furniture"]
-    },
-    {
-        img: "item7.png",
-        name: "Item7",
-        desc: "This is the description of item 7",
-        location: "80202",
-        lookingFor: ["furniture", "decor"],
-        owner: "User7",
-        postedDate: "10-08-2024",
-        tags: ["decor", "books"]
-    },
-    {
-        img: "item8.jpg",
-        name: "Item8",
-        desc: "This is the description of item 8",
-        location: "98101",
-        lookingFor: ["kitchenware", "furniture", "decor"],
-        owner: "User8",
-        postedDate: "09-28-2024",
-        tags: ["kitchenware", "furniture"]
-    },
-    {
-        img: "item9.jpg",
-        name: "Item9",
-        desc: "This is the description of item 9",
-        location: "15213",
-        lookingFor: ["books", "decor"],
-        owner: "User9",
-        postedDate: "10-12-2024",
-        tags: ["books", "decor"]
-    }
-];
-
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        padding: 20,
-        backgroundColor: '#f8f9fa',
-    },
-    welcomeText: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        marginBottom: 20,
-        color: '#343a40',
-        textAlign: 'center',
-    },
-    input: {
-        height: 50,
-        borderColor: '#ced4da',
-        borderWidth: 1,
-        borderRadius: 8,
-        paddingHorizontal: 16,
-        marginBottom: 16,
-        fontSize: 16,
-        backgroundColor: '#fff',
-    },
-    buttonContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginBottom: 20,
-    },
-    button: {
-        backgroundColor: '#06ACB7',
-        borderRadius: 12,
-        paddingVertical: 12,
-        marginBottom: 16,
-    },
-    buttonText: {
-        color: '#fff',
-        fontSize: 16,
-        fontWeight: 'bold',
-        textAlign: 'center',
-    },
-    list: {
-        marginTop: 20,
-    },
-    itemContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        backgroundColor: '#fff',
-        borderRadius: 8,
-        padding: 16,
-        marginBottom: 12,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 4,
-        elevation: 3,
-    },
-    itemImage: {
-        width: 60,
-        height: 60,
-        borderRadius: 30,
-        marginRight: 16,
-    },
-    itemDetails: {
-        flex: 1,
-    },
-    itemName: {
-        fontSize: 18,
-        fontWeight: '600',
-        color: '#343a40',
-        marginBottom: 4,
-    },
-    itemDescription: {
-        fontSize: 14,
-        color: '#6c757d',
-    },
-    iconContainer: {
-        flexDirection: 'row',
-        justifyContent: 'flex-end',
-        alignItems: 'center',
-    },
-    icon: {
-        marginLeft: 15,
-    },
-    previewImage: {
-        width: '100%',
-        height: 200,
-        borderRadius: 8,
-        marginBottom: 16,
-    },
+  container: {
+    flex: 1,
+    padding: 20,
+    backgroundColor: '#fff',
+  },
+  scrollContainer: {
+    flexGrow: 1,
+    justifyContent: 'center',
+  },
+  welcomeText: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 20,
+    textAlign: 'center',
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: '#06ACB7',
+    borderRadius: 5,
+    padding: 10,
+    marginBottom: 15,
+  },
+  button: {
+    backgroundColor: '#06ACB7',
+    padding: 15,
+    borderRadius: 5,
+    alignItems: 'center',
+    marginBottom: 15,
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 16,
+  },
+  previewImage: {
+    width: 200,
+    height: 200,
+    marginBottom: 15,
+  },
+  tagButton: {
+    padding: 10,
+    backgroundColor: '#f8f9fa',
+    borderWidth: 1,
+    borderColor: '#ddd',
+    borderRadius: 5,
+    marginBottom: 10,
+    alignItems: 'center',
+  },
+  tagButtonSelected: {
+    backgroundColor: '#06ACB7',
+  },
+  tagText: {
+    color: '#000',
+  },
+  tagTextSelected: {
+    color: '#fff',
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,0.5)',
+  },
+  modalContent: {
+    backgroundColor: '#fff',
+    padding: 20,
+    borderRadius: 10,
+    width: '80%',
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 20,
+    textAlign: 'center',
+  },
+  closeButton: {
+    marginTop: 20,
+    alignItems: 'center',
+  },
 });
+
+export default ItemPage;
