@@ -128,8 +128,8 @@ const MarketPage = ({ navigation, interestedItems, offeredItems, toggleIntereste
 
     const applyFilters = () => {
         const filtered = items.filter(item =>
-            (selectedItemTags.some(tag => item.tags.includes(tag)) ||
-                selectedLookingForTags.some(tag => item.lookingFor.includes(tag)))
+        (selectedItemTags.some(tag => item.tags.includes(tag)) ||
+            selectedLookingForTags.some(tag => item.lookingFor.includes(tag)))
         );
         setFilteredItems(selectedItemTags.length > 0 || selectedLookingForTags.length > 0 ? filtered : items);
         setFilterModalVisible(false);
@@ -210,61 +210,162 @@ const MarketPage = ({ navigation, interestedItems, offeredItems, toggleIntereste
                 renderItem={renderItem}
             />
 
-<Modal visible={filterModalVisible} animationType="slide" transparent>
-    <View style={styles.modalContainer}>
-        <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>Select Tags to Filter</Text>
+            <Modal visible={filterModalVisible} animationType="slide" transparent>
+                <View style={styles.modalContainer}>
+                    <View style={styles.modalContent}>
+                        <Text style={styles.modalTitle}>Select Tags to Filter</Text>
 
-            <Text style={styles.sectionTitle}>Filter by Item Tags:</Text>
-            <View style={styles.tagsGrid}>
-                {ALLOWED_TAGS.map(tag => (
-                    <TouchableOpacity
-                        key={`item-${tag}`}
-                        style={[
-                            styles.tagButton,
-                            selectedItemTags.includes(tag) && styles.tagButtonSelected
-                        ]}
-                        onPress={() => toggleTagSelection(tag, 'item')}
-                    >
-                        <Text style={styles.tagText}>{tag}</Text>
-                    </TouchableOpacity>
-                ))}
-            </View>
-    
-            <Text style={styles.sectionTitle}>Filter by Looking For Tags:</Text>
-            <View style={styles.tagsGrid}>
-                {ALLOWED_TAGS.map(tag => (
-                    <TouchableOpacity
-                        key={`looking-${tag}`}
-                        style={[
-                            styles.tagButton,
-                            selectedLookingForTags.includes(tag) && styles.tagButtonSelected
-                        ]}
-                        onPress={() => toggleTagSelection(tag, 'looking')}
-                    >
-                        <Text style={styles.tagText}>{tag}</Text>
-                    </TouchableOpacity>
-                ))}
-            </View>
+                        <Text style={styles.sectionTitle}>Filter by Item Tags:</Text>
+                        <View style={styles.tagsGrid}>
+                            {ALLOWED_TAGS.map(tag => (
+                                <TouchableOpacity
+                                    key={`item-${tag}`}
+                                    style={[
+                                        styles.tagButton,
+                                        selectedItemTags.includes(tag) && styles.tagButtonSelected
+                                    ]}
+                                    onPress={() => toggleTagSelection(tag, 'item')}
+                                >
+                                    <Text style={styles.tagText}>{tag}</Text>
+                                </TouchableOpacity>
+                            ))}
+                        </View>
 
-            <Button title="Apply Filters" onPress={applyFilters} />
-        </View>
-    </View>
-</Modal>
+                        <Text style={styles.sectionTitle}>Filter by Looking For Tags:</Text>
+                        <View style={styles.tagsGrid}>
+                            {ALLOWED_TAGS.map(tag => (
+                                <TouchableOpacity
+                                    key={`looking-${tag}`}
+                                    style={[
+                                        styles.tagButton,
+                                        selectedLookingForTags.includes(tag) && styles.tagButtonSelected
+                                    ]}
+                                    onPress={() => toggleTagSelection(tag, 'looking')}
+                                >
+                                    <Text style={styles.tagText}>{tag}</Text>
+                                </TouchableOpacity>
+                            ))}
+                        </View>
+
+                        <Button title="Apply Filters" onPress={applyFilters} />
+                    </View>
+                </View>
+            </Modal>
         </View>
     );
 };
 
 const styles = StyleSheet.create({
-    container: { flex: 1, padding: 16, backgroundColor: '#fff' },
-    itemContainer: { flexDirection: 'row', borderWidth: 1, borderRadius: 8, marginBottom: 20 },
-    itemDetails: { flex: 1, padding: 10 },
-    itemName: { fontWeight: 'bold' },
-    itemImage: { width: '35%', height: '100%', resizeMode: 'stretch' },
-    noItemsText: { textAlign: 'center', marginTop: 20 },
-    errorText: { textAlign: 'center', color: 'red', marginTop: 20 },
-    header: { flexDirection: 'row', justifyContent: 'space-between' },
-    searchInput: { flex: 1, height: 40, borderWidth: 1, borderRadius: 8, marginRight: 10, paddingLeft: 8 },
+    container: {
+        flex: 1,
+        padding: 20,
+        backgroundColor: '#f5f5f5',
+    },
+    header: {
+        marginBottom: 24,
+        position: 'relative',
+    },
+    headerButtons: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: 16,
+    },
+    savedItems: {
+        backgroundColor: '#06ACB7',
+        borderRadius: 20,
+        paddingVertical: 8,
+        paddingHorizontal: 12,
+        elevation: 3,
+    },
+    interestedCountText: {
+        color: 'white',
+        fontSize: 14,
+        fontWeight: 'bold',
+    },
+    iconContainer: {
+        backgroundColor: '#ffffff',
+        borderRadius: 30,
+        padding: 10,
+        elevation: 3,
+    },
+    searchContainer: {
+        position: 'relative',
+        marginBottom: 16,
+    },
+    searchInput: {
+        height: 50,
+        borderWidth: 1,
+        borderColor: '#e0e0e0',
+        padding: 12,
+        borderRadius: 25,
+        backgroundColor: '#ffffff',
+        fontSize: 16,
+        elevation: 2,
+    },
+    itemContainer: {
+        flexDirection: 'row',
+        borderWidth: 1,
+        borderColor: '#e0e0e0',
+        borderRadius: 12,
+        marginBottom: 24,
+        backgroundColor: '#ffffff',
+        overflow: 'hidden',
+        elevation: 3,
+    },
+    itemImage: {
+        width: '35%',
+        height: 150,
+        resizeMode: 'cover',
+    },
+    itemDetails: {
+        flex: 1,
+        padding: 16,
+    },
+    itemName: {
+        fontWeight: 'bold',
+        fontSize: 18,
+        marginBottom: 8,
+        color: '#333333',
+    },
+    itemDescription: {
+        fontSize: 14,
+        color: '#666666',
+        marginBottom: 8,
+    },
+    itemTags: {
+        fontSize: 12,
+        color: '#888888',
+        marginBottom: 4,
+    },
+    itemLocation: {
+        fontSize: 12,
+        color: '#888888',
+        marginBottom: 8,
+    },
+    offerText: {
+        color: '#28a745',
+        fontWeight: 'bold',
+        marginTop: 8,
+    },
+    savedIcon: {
+        position: 'absolute',
+        top: 12,
+        right: 12,
+        zIndex: 1,
+    },
+    noItemsText: {
+        textAlign: 'center',
+        marginTop: 24,
+        fontSize: 16,
+        color: '#666666',
+    },
+    errorText: {
+        textAlign: 'center',
+        color: '#ff3b30',
+        marginTop: 24,
+        fontSize: 16,
+    },
     modalContainer: {
         flex: 1,
         justifyContent: 'center',
@@ -273,83 +374,48 @@ const styles = StyleSheet.create({
     },
     modalContent: {
         width: '90%',
-        backgroundColor: '#fff',
-        padding: 20,
-        borderRadius: 8,
+        backgroundColor: '#ffffff',
+        padding: 24,
+        borderRadius: 16,
+        elevation: 5,
     },
     modalTitle: {
-        fontSize: 18,
+        fontSize: 22,
         fontWeight: 'bold',
         textAlign: 'center',
-        marginBottom: 20,
+        marginBottom: 24,
+        color: '#333333',
     },
     sectionTitle: {
-        fontSize: 16,
+        fontSize: 18,
         fontWeight: 'bold',
-        marginVertical: 10,
+        marginVertical: 16,
+        color: '#444444',
     },
     tagsGrid: {
         flexDirection: 'row',
         flexWrap: 'wrap',
         justifyContent: 'space-between',
-        marginBottom: 20,
+        marginBottom: 24,
     },
     tagButton: {
         width: '48%',
-        padding: 10,
+        padding: 12,
         borderWidth: 1,
+        borderColor: '#06ACB7',
         borderRadius: 8,
-        marginVertical: 5,
+        marginVertical: 6,
         alignItems: 'center',
     },
     tagButtonSelected: {
         backgroundColor: '#06ACB7',
-        borderColor: '#06ACB7',
     },
     tagText: {
-        color: '#000',
+        color: '#06ACB7',
+        fontSize: 14,
+        fontWeight: '600',
     },
-    interestedCountText: {
-        color: 'white',
-        fontSize: 12,
-        fontWeight: 'bold',
-    },
-    offerText: {
-        color: '#28a745',
-    },
-    savedItems: {
-        position: 'absolute', 
-        backgroundColor: '#06ACB7',
-        borderRadius: 15,
-        paddingVertical: 5,
-        marginTop: -8,
-        paddingHorizontal: 10,
-    },
-    iconContainer: {
-        flex: 1,
-        marginTop: -8,
-        justifyContent: 'flex-end',
-        marginLeft:325,
-        alignItems: 'center',
-        marginBottom: 8,
-    },
-    headerButtons: {
-        flexDirection: 'row',
-    },
-    header: {
-        marginBottom: 16,
-        position: 'relative',
-    },
-    searchContainer: {
-        position: 'relative',
-        marginBottom: 10,
-        paddingTop: 30,
-    },
-    searchInput: {
-        height: 40,
-        borderWidth: 1,
-        borderColor: '#ccc',
-        padding: 10,
-        borderRadius: 8,
+    tagTextSelected: {
+        color: '#ffffff',
     },
 });
