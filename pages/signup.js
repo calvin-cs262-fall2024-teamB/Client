@@ -42,7 +42,7 @@ export default function Signup({ navigation }) {
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <View style={styles.container}>
-                <Image source={require('../assets/bomb.jpg')} style={styles.logo} />
+                <Image source={require('../assets//LogoTransparent.png')} style={styles.logo} />
 
                 <Text style={styles.title}>Create an Account</Text>
                 <Text style={styles.subtitle}>Connect with others today!</Text>
