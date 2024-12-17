@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import axios from 'axios';
 
 export default function Signup({ navigation }) {
     const [username, setUsername] = useState('');
@@ -9,17 +10,34 @@ export default function Signup({ navigation }) {
     const [confirmPassword, setConfirmed] = useState('');
 
     const handleSignup = () => {
-        if (password !== confirmPassword){
-            alert('Passwords do not match')
+        if (password !== confirmPassword) {
+            alert('Passwords do not match');
             return;
         }
         if (username && email && phoneNumber && password) {
-            alert('Account created successfully!');
-            navigation.replace('LocationPermissionScreen'); // Navigate to the location screen
+            const userData = {
+                name: username,
+                email: email.trim().toLowerCase(),
+                password: password,
+            };
+            axios.post('https://bombasticweb-dmenc3dmg9hhcxgk.canadaeast-01.azurewebsites.net/account', userData)
+                .then(response => {
+                    alert('Account created successfully!');
+                    navigation.replace('LocationPermissionScreen');
+                })
+                .catch(error => {
+                    if (error.response && error.response.status === 409) {
+                        alert('Email already in use. Please use a different email.');
+                    } else {
+                        alert('Failed to create account. Please try again.');
+                    }
+                    console.error(error);
+                });
         } else {
             alert('Please fill in all the fields.');
         }
     };
+
 
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
