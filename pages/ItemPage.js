@@ -14,6 +14,8 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as ImagePicker from 'expo-image-picker';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import * as FileSystem from 'expo-file-system';
+import * as ImageManipulator from 'expo-image-manipulator';
 
 const ItemPage = () => {
   const [itemName, setItemName] = useState('');
@@ -32,6 +34,9 @@ const ItemPage = () => {
   const { fromProfile } = route.params || {};
 
   const ALLOWED_TAGS = ['books', 'decor', 'kitchenware', 'furniture', 'appliances', 'electronics', 'toys', 'games'];
+
+  const MAX_IMAGE_SIZE_MB = 0.5; // Maximum size in MB
+  const MAX_IMAGE_SIZE_BYTES = MAX_IMAGE_SIZE_MB * 1024 * 1024;
 
   useEffect(() => {
     const loadItems = async () => {
@@ -52,11 +57,58 @@ const ItemPage = () => {
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [4, 3],
-      quality: 1,
+      quality: 1, // Start with the highest quality
     });
+  
     if (result.assets && result.assets.length > 0) {
-      setImage(result.assets[0].uri);
+      let imageUri = result.assets[0].uri;
+      try {
+        let compressedImage = await compressImageToLimit(imageUri);
+  
+        // Convert the image to base64
+        const base64Image = await FileSystem.readAsStringAsync(compressedImage.uri, {
+          encoding: FileSystem.EncodingType.Base64,
+        });
+  
+        setImage(`${base64Image}`);
+      } catch (error) {
+        console.error('Error processing the image:', error);
+        alert('Failed to process the image. Please try again.');
+      }
     }
+  };
+
+  const compressImageToLimit = async (uri) => {
+    let quality = 0.9; // Start at 90% quality
+    let width = 1024; // Initial width
+    let height = 768; // Initial height
+  
+    let image = { uri };
+    let fileSize = await getImageSize(uri);
+  
+    // Keep reducing quality and dimensions until the image is below the limit
+    while (fileSize > MAX_IMAGE_SIZE_BYTES && quality > 0.1) {
+      const manipulatedImage = await ImageManipulator.manipulateAsync(
+        image.uri,
+        [{ resize: { width, height } }],
+        { compress: quality, format: ImageManipulator.SaveFormat.JPEG }
+      );
+  
+      fileSize = await getImageSize(manipulatedImage.uri);
+      image = manipulatedImage;
+  
+      quality -= 0.1; // Reduce quality by 10%
+      width = Math.floor(width * 0.9); // Reduce width by 10%
+      height = Math.floor(height * 0.9); // Reduce height by 10%
+    }
+  
+    return image;
+  };
+  
+  // Helper function to get the file size of an image
+  const getImageSize = async (uri) => {
+    const fileInfo = await FileSystem.getInfoAsync(uri);
+    return fileInfo.size || 0;
   };
 
   const toggleTagSelection = (tag, selectedTags, setSelectedTags) => {
@@ -75,7 +127,7 @@ const ItemPage = () => {
 
     // Construct the item data to send to the server
     const newItem = {
-      ownerAccount: 3, // Replace with the actual user ID
+      ownerAccount: 6, // Replace with the actual user ID
       name: itemName,
       description: itemDescription,
       location: `${itemLocation.lat}, ${itemLocation.lon}`,
@@ -86,7 +138,7 @@ const ItemPage = () => {
 
     try {
       // Make the POST request using fetch
-      const response = await fetch('https://bombasticweb-dmenc3dmg9hhcxgk.canadaeast-01.azurewebsites.net/items', {
+      const response = await fetch('http://10.0.0.154:8080/items', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
