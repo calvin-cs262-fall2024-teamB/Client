@@ -119,7 +119,7 @@ const ItemPage = () => {
     }
   };
 
-  const handleAddItem = async () => {
+  const handleAddItem = async () => { // Add Items
     if (!itemName.trim() || !itemDescription.trim()) {
       alert('Please enter both item name and description');
       return;
@@ -138,7 +138,7 @@ const ItemPage = () => {
 
     try {
       // Make the POST request using fetch
-      const response = await fetch('http://10.0.0.154:8080/items', {
+      const response = await fetch('https://bombasticweb-dmenc3dmg9hhcxgk.canadaeast-01.azurewebsites.net/items', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
