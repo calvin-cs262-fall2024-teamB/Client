@@ -91,6 +91,7 @@ const MarketPage = ({ navigation, interestedItems, offeredItems, toggleIntereste
     const [filterModalVisible, setFilterModalVisible] = useState(false);
     const [selectedItemTags, setSelectedItemTags] = useState([]);
     const [selectedLookingForTags, setSelectedLookingForTags] = useState([]);
+    
 
     const API_URL = 'https://bombasticweb-dmenc3dmg9hhcxgk.canadaeast-01.azurewebsites.net/market/1';
     const ALLOWED_TAGS = ["books", "decor", "kitchenware", "furniture", "appliances", "electronics", "toys", "games"];
@@ -174,6 +175,8 @@ const MarketPage = ({ navigation, interestedItems, offeredItems, toggleIntereste
         </TouchableOpacity>
     );
 
+    const isFilterApplied = selectedItemTags.length > 0 || selectedLookingForTags.length > 0;
+
     return (
         <View style={styles.container}>
             <View style={styles.header}>
@@ -196,7 +199,7 @@ const MarketPage = ({ navigation, interestedItems, offeredItems, toggleIntereste
                     value={searchText}
                     onChangeText={setSearchText}
                 />
-                <Button title="Filter" onPress={() => setFilterModalVisible(true)} />
+                <Button title="Filter" color="#06ACB7" onPress={() => setFilterModalVisible(true)} />
             </View>
 
             {loading && <ActivityIndicator size="large" color="#1ABC9C" />}
@@ -226,7 +229,7 @@ const MarketPage = ({ navigation, interestedItems, offeredItems, toggleIntereste
                                     ]}
                                     onPress={() => toggleTagSelection(tag, 'item')}
                                 >
-                                    <Text style={styles.tagText}>{tag}</Text>
+                                    <Text style={[styles.tagText, selectedItemTags.includes(tag) && styles.tagTextSelected]}>{tag}</Text>
                                 </TouchableOpacity>
                             ))}
                         </View>
@@ -242,12 +245,12 @@ const MarketPage = ({ navigation, interestedItems, offeredItems, toggleIntereste
                                     ]}
                                     onPress={() => toggleTagSelection(tag, 'looking')}
                                 >
-                                    <Text style={styles.tagText}>{tag}</Text>
+                                    <Text style={[styles.tagText, selectedLookingForTags.includes(tag) && styles.tagTextSelected]}>{tag}</Text>
                                 </TouchableOpacity>
                             ))}
                         </View>
 
-                        <Button title="Apply Filters" onPress={applyFilters} />
+                        <Button title="Apply Filters" color="#06ACB7" onPress={applyFilters} />
                     </View>
                 </View>
             </Modal>
