@@ -3,6 +3,15 @@
     "name": "HelloWorldApp",
     "slug": "HelloWorldApp",
     "version": "1.0.0",
+    "newArchEnabled": true,
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "The app needs access to your photos to let you share them."
+        }
+      ]
+    ],
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",

@@ -1,12 +1,41 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import axios from 'axios';
 
 export default function Login({ navigation }) {
-    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
 
     const handleLogin = () => {
-        // Pass the username when navigating to the Dashboard
-        navigation.replace('Dashboard', { username });
+        if (!email || !password) {
+            alert('Please enter both email and password');
+            return;
+        }
+        console.log('Attempting login with:', email, password); // Debug: log credentials
+        axios.post('https://bombasticweb-dmenc3dmg9hhcxgk.canadaeast-01.azurewebsites.net/login', {
+            email: email.trim().toLowerCase(),
+            password: password
+        })
+            .then(response => {
+                console.log('Login response:', response); // Debug: log response
+                alert('Login successful');
+                navigation.replace('Dashboard', { username: email });
+            })
+            .catch(error => {
+                console.log('Login error:', error.response || error); // Debug: log error
+                if (error.response) {
+                    const { status, data } = error.response;
+                    if (status === 401) {
+                        alert('Authentication failed: Incorrect email or password');
+                    } else if (status === 404) {
+                        alert('User not found');
+                    } else {
+                        alert('Login failed: ' + (data.message || 'Please check your credentials'));
+                    }
+                } else {
+                    alert('Network error or server is down');
+                }
+            });
     };
 
     return (
@@ -19,13 +48,17 @@ export default function Login({ navigation }) {
 
                 <TextInput
                     style={styles.input}
-                    placeholder="Enter Your Username"
-                    value={username}
-                    onChangeText={setUsername}
+                    placeholder="Enter Your Email"
+                    value={email}
+                    onChangeText={setEmail}
+                    keyboardType="email-address"
+                    autoCapitalize="none"
                 />
                 <TextInput
                     style={styles.input}
                     placeholder="Enter Your Password"
+                    value={password}
+                    onChangeText={setPassword}
                     secureTextEntry
                 />
 
@@ -33,9 +66,9 @@ export default function Login({ navigation }) {
                     <Text style={styles.loginButtonText}>Login</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity onPress={() => navigation.replace('Signup')}>
-                    <Text style={styles.signupText}>
-                        Don't have an account? <Text style={styles.signupLink}>Sign up</Text>
+                <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
+                    <Text style={styles.loginText}>
+                        Don't have an account? <Text style={styles.loginLink}>Sign up</Text>
                     </Text>
                 </TouchableOpacity>
             </View>
@@ -92,11 +125,11 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: 16,
     },
-    signupText: {
+    loginText: {
         color: '#666',
         fontSize: 14,
     },
-    signupLink: {
+    loginLink: {
         color: '#007bff',
         fontWeight: 'bold',
     },
