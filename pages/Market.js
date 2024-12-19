@@ -103,15 +103,19 @@ const MarketPage = ({ navigation, interestedItems, offeredItems, toggleIntereste
                 const data = await response.json();
 
                 const formattedItems = data.map(item => ({
-                    img: require('./item-images/toaster.png'), // Placeholder image
+                    img: item.itemimages?.[0]?.ImageData
+                        ? { uri: `data:image/jpeg;base64,${item.itemimages[0].ImageData}` }
+                        : require('./item-images/toaster.png'), // Placeholder image
                     name: item.itemname,
                     desc: item.itemdescription,
                     location: `x: ${item.itemlocation.x}, y: ${item.itemlocation.y}`,
-                    lookingFor: item.lookingfortags ? item.lookingfortags.map(tag => tag?.toLowerCase()) : [],
+                    lookingFor: item.lookingfortags?.map(tag => tag?.toLowerCase()) || [],
                     owner: `User ${item.itemownerid}`,
                     postedDate: new Date(item.dateposted).toLocaleDateString(),
-                    tags: item.itemtags ? item.itemtags.map(tag => tag?.toLowerCase()) : [],
+                    tags: item.itemtags?.map(tag => tag?.toLowerCase()) || [],
                 }));
+                
+                
 
                 setItems(formattedItems);
                 setFilteredItems(formattedItems);
@@ -156,7 +160,11 @@ const MarketPage = ({ navigation, interestedItems, offeredItems, toggleIntereste
             style={styles.itemContainer}
             onPress={() => navigation.navigate('ItemDetail', { item })}
         >
-            <Image source={item.img} style={styles.itemImage} />
+            <Image
+                source={item.img}
+                style={styles.itemImage}
+                onError={() => console.error('Error loading image:', item.name)}
+            />
             <View style={styles.itemDetails}>
                 <Text style={styles.itemName}>{item.name}</Text>
                 <Text>{item.desc}</Text>
@@ -177,7 +185,8 @@ const MarketPage = ({ navigation, interestedItems, offeredItems, toggleIntereste
             </TouchableOpacity>
         </TouchableOpacity>
     );
-
+    const isFilterApplied = selectedItemTags.length > 0 || selectedLookingForTags.length > 0;
+    
     return (
         <View style={styles.container}>
             <View style={styles.header}>

@@ -31,7 +31,7 @@ const ProfilePage = ({ route, navigation }) => {
 
       <TouchableOpacity
         style={styles.myItemButton}
-        onPress={() => navigation.navigate('ItemPage', { fromProfile: true })}>
+        onPress={() => navigation.navigate('ItemPage', { fromProfile: true, username })}>
         <Text style={styles.itemButtonText}>My Items</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.myItemButton} onPress={() => navigation.navigate('InterestedPage',)}>
