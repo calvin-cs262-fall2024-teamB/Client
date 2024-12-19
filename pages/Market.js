@@ -209,7 +209,14 @@ const MarketPage = ({ navigation, interestedItems, offeredItems, toggleIntereste
                     value={searchText}
                     onChangeText={setSearchText}
                 />
-                <Button title="Filter" onPress={() => setFilterModalVisible(true)} />
+
+                <View style={styles.filterButton}>
+                    <TouchableOpacity onPress={() => setFilterModalVisible(true)}>
+                        <Text style={styles.filterText}>FILTER</Text>
+                    </TouchableOpacity>
+                </View>
+                
+
             </View>
 
             {loading && <ActivityIndicator size="large" color="#1ABC9C" />}
@@ -260,7 +267,7 @@ const MarketPage = ({ navigation, interestedItems, offeredItems, toggleIntereste
                 ))}
             </View>
 
-            <Button title="Apply Filters" onPress={applyFilters} />
+            <Button title="Apply Filters" color ='#06ACB7' onPress={applyFilters} />
         </View>
     </View>
 </Modal>
@@ -365,4 +372,16 @@ const styles = StyleSheet.create({
         padding: 10,
         borderRadius: 8,
     },
+    filterButton: {
+        backgroundColor: '#06ACB7',
+        borderRadius: 20,
+        padding: 10,
+        elevation: 3,
+        marginTop: 10,
+    },
+    filterText: {
+        color: "white",
+        fontWeight: 'bold',
+        textAlign: 'center',
+    }
 });
