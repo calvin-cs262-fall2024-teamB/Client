@@ -1,18 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, StyleSheet, TouchableOpacity, Image } from 'react-native';
+
+import { Text, View, StyleSheet, TouchableOpacity, Image, ScrollView } from 'react-native';
+
 import PropTypes from 'prop-types';
 
 const ItemDetail = ({ route, navigation }) => {
   const { item, toggleInterested, interestedItems } = route.params || {};
   const [isInterested, setIsInterested] = useState(false);
+  const [isImageEnlarged, setIsImageEnlarged] = useState(false);
 
   useEffect(() => {
     if (interestedItems) {
       setIsInterested(interestedItems.some(i => i.name === item.name));
     }
   }, [interestedItems, item]);
-  
-  
+
   if (!item) {
     return (
       <View style={styles.container}>
@@ -29,121 +31,176 @@ const ItemDetail = ({ route, navigation }) => {
     toggleInterested(item);
   };
 
+  const toggleImageSize = () => {
+    setIsImageEnlarged(!isImageEnlarged);
+  };
 
   return (
-    <View style={styles.container}>
-      <Image source={item.img} style={styles.itemImage} />
-      <Text style={styles.itemName}>{item.name}</Text>
-      <Text style={styles.itemDescription}>{item.desc}</Text>
-      <TouchableOpacity
-        style={[
-          styles.interestedButton,
-          false ? styles.interestedButtonActive : styles.interestedButtonInactive /* change to change if offer is made */
-        ]}
-        onPress={() => navigation.navigate('InitiateTrade' , { item: item })} 
-      >
-        <Text style={styles.buttonText}>
-          Make Trade Offer
-        </Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={[
-          styles.interestedButton,
-          isInterested ? styles.interestedButtonActive : styles.interestedButtonInactive 
-        ]}
-        onPress={handleInterested}
-      >
-        <Text style={styles.buttonText}>{isInterested ? 'Item Saved' : 'Save'}</Text> 
-      </TouchableOpacity>
-    </View>
+    <ScrollView style={styles.scrollContainer}>
+      <View style={styles.container}>
+        <View style={styles.itemDetails}>
+          <TouchableOpacity onPress={toggleImageSize}>
+            <Image
+              source={item.img}
+              style={isImageEnlarged ? styles.itemImageLarge : styles.itemImage}
+            />
+          </TouchableOpacity>
+          <View style={styles.textContainer}>
+            <Text style={styles.itemName}>{item.name}</Text>
+            <Text style={styles.itemDescription}>{item.desc}</Text>
+          </View>
+        </View>
+        <View style={styles.separator} />
+        <Text style={styles.tagsLabel}>Tags:</Text>
+        <View style={styles.tagsContainer}>
+          {item.tags.map((tag, index) => (
+            <View key={index} style={styles.tagBox}>
+              <Text style={styles.tagText}>{tag}</Text>
+            </View>
+          ))}
+        </View>
+        <View style={styles.separator} />
+        <Text style={styles.tagsLabel}>Looking For:</Text>
+        <View style={styles.tagsContainer}>
+          {item.lookingFor.map((tag, index) => (
+            <View key={index} style={styles.tagBox}>
+              <Text style={styles.tagText}>{tag}</Text>
+            </View>
+          ))}
+        </View>
+        <View style={styles.separator} />
+        <Text style={styles.tagsLabel}>Location:</Text>
+        <Text style={styles.locationText}>{item.location}</Text>
+        <View style={styles.separator} />
+        <TouchableOpacity
+          style={styles.tradeButton}
+          onPress={() => navigation.navigate('InitiateTrade', { item: item })}
+        >
+          <Text style={styles.buttonText}>Make Trade Offer</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.interestedButton}
+          onPress={handleInterested}
+        >
+          <Text style={styles.interestedButtonText}>{isInterested ? 'Item Saved' : 'Save'}</Text>
+        </TouchableOpacity>
+      </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
+  scrollContainer: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
     backgroundColor: '#fff',
     padding: 16,
+  },
+  itemDetails: {
+    flexDirection: 'row',
+    marginBottom: 16,
+  },
+  itemImage: {
+    width: 100,
+    height: 100,
+    resizeMode: 'cover',
+    marginRight: 16,
+  },
+  itemImageLarge: {
+    width: 200,
+    height: 200,
+    resizeMode: 'cover',
+    marginRight: 16,
+  },
+  textContainer: {
+    flex: 1,
+    justifyContent: 'center',
   },
   itemName: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 10,
+    marginBottom: 8,
   },
   itemDescription: {
     fontSize: 16,
     color: '#333',
-    marginBottom: 20,
-    textAlign: 'center',
   },
-  itemImage: {
-    width: '90%',
-    height: "70%",
-    resizeMode: "stretch",
-    marginBottom: 20,
+  separator: {
+    height: 2,
+    backgroundColor: '#06ACB7',
+    marginVertical: 16,
+  },
+  tagsLabel: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 8,
+  },
+  tagsContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginBottom: 16,
+  },
+  tagBox: {
+    backgroundColor: '#1ABC9C',
+    borderRadius: 12,
+    paddingVertical: 6,
+    paddingHorizontal: 12,
+    marginRight: 8,
+    marginBottom: 8,
+  },
+  tagText: {
+    color: '#fff',
+    fontSize: 14,
+  },
+  locationText: {
+    fontSize: 16,
+    color: '#333',
+    marginBottom: 16,
   },
   interestedButton: {
     paddingVertical: 12,
     paddingHorizontal: 24,
     borderRadius: 25,
-    marginBottom: 10,
-  },
-  interestedButtonActive: {
-    borderWidth: 2,
-    borderColor: '#06ACB7',
+    marginBottom: 20,
     backgroundColor: '#06ACB7',
-    transform: [{ scale: 1 }], 
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.2,
-    shadowRadius: 3,
-    elevation: 2,
-  },
-  interestedButtonInactive: {
     borderWidth: 2,
     borderColor: '#06ACB7',
-    backgroundColor: '#ebfafa',
-    transform: [{ scale: 0.97 }], 
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.4,
-    shadowRadius: 4,
-    elevation: 5,
   },
-  backButton: {
-    backgroundColor: '#45aaf2',
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-    borderRadius: 25,
-  },
-  buttonText: {
-    color: '#000000',
+  interestedButtonText: {
+    color: '#ffffff',
     fontSize: 16,
     fontWeight: 'bold',
     textAlign: 'center',
   },
-  topButtonText: {
-    fontWeight: 'bold',
-    fontSize: 16,
-    color: '#ffffff'
+  tradeButton: {
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 25,
+    backgroundColor: '#06ACB7',
+    marginBottom: 20,
   },
-  topBackButton: {
-    backgroundColor: '#1ABC9C',
-    borderRadius: 15,
-    paddingVertical: 5,
-    paddingHorizontal: 10,
-    marginTop: 4,
-    marginBottom: 3,
-    alignSelf: 'flex-start',
+  buttonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
 });
-
 
 ItemDetail.propTypes = {
   route: PropTypes.shape({
     params: PropTypes.shape({
       item: PropTypes.shape({
         name: PropTypes.string.isRequired,
+        img: PropTypes.any.isRequired,
+        desc: PropTypes.string.isRequired,
+        tags: PropTypes.array.isRequired,
+        lookingFor: PropTypes.array.isRequired,
+        location: PropTypes.string.isRequired,
       }).isRequired,
       toggleInterested: PropTypes.func.isRequired,
       interestedItems: PropTypes.array.isRequired,
