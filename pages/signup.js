@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
     signupButton: {
         width: '100%',
         height: 50,
-        backgroundColor: '#007bff',
+        backgroundColor: '#06ACB7',
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 10,
@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
         fontSize: 14,
     },
     loginLink: {
-        color: '#007bff',
+        color: '#06ACB7',
         fontWeight: 'bold',
     },
 });

@@ -12,39 +12,40 @@ const Tab = createBottomTabNavigator();
 
 export default function Dashboard({ route }) {
     // Extract the username from the navigation route parameters
-    const { username = 'Guest', initialPage = 'Market' } = route.params || {};
+    const { username = 'potato1@gmail.com', initialPage = 'Market' } = route.params || {};
 
     return (
         <Tab.Navigator initialRouteName={initialPage}
-        screenOptions={{ 
-            tabBarStyle: styles.tabBar, 
-            tabBarActiveTintColor: '#1ABC9C',
-            tabBarInactiveTintColor: '#fff',
-            tabBarHideOnKeyboard: true,
-            headerShown: false,
-        }}
+            screenOptions={{
+                tabBarStyle: styles.tabBar,
+                tabBarActiveTintColor: '#1ABC9C',
+                tabBarInactiveTintColor: '#fff',
+                tabBarHideOnKeyboard: true,
+                headerShown: false,
+            }}
         >
 
-            <Tab.Screen name="Market" component={Market} 
-            options={{ 
-                tabBarIcon: 
-                ({ focused, color, size }) => 
-                <Icon focused={focused} name='store' size={size} color={color} /> 
-            }}
+            <Tab.Screen name="Market" component={Market}
+                options={{
+                    tabBarIcon:
+                        ({ focused, color, size }) =>
+                            <Icon focused={focused} name='store' size={size} color={color} />
+                }}
             />
 
             <Tab.Screen name="Chats" component={MessagingPage}
-            options={{ tabBarIcon: 
-                ({ focused, color, size }) => 
-                <Icon focused={focused} name='chat' size={size} color={color} /> 
-            }}/>
+                options={{
+                    tabBarIcon:
+                        ({ focused, color, size }) =>
+                            <Icon focused={focused} name='chat' size={size} color={color} />
+                }} />
 
-             <Tab.Screen 
-                name="Profile" 
+            <Tab.Screen
+                name="Profile"
                 component={ProfilePage}
                 initialParams={{ username }} // Pass in username here
-                options={{ 
-                    tabBarIcon: ({ focused, color, size }) => 
+                options={{
+                    tabBarIcon: ({ focused, color, size }) =>
                         <Icon focused={focused} name="person" size={size} color={color} />,
                 }}
             />
@@ -74,13 +75,13 @@ const styles = StyleSheet.create({
         color: '#888',
     },
 
-    tabBar: { 
+    tabBar: {
         backgroundColor: '#2C3E50',
         tabBarActiveTintColor: '#fff',
         tabBarActiveTintColor: '#000',
 
     },
-    
+
 });
 
 

@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
         width: 20,
         height: 20,
         borderWidth: 2,
-        borderColor: '#007bff',
+        borderColor: '#06ACB7',
         marginRight: 10,
         justifyContent: 'center',
         alignItems: 'center',
@@ -89,13 +89,13 @@ const styles = StyleSheet.create({
     checked: {
         width: 10,
         height: 10,
-        backgroundColor: '#007bff',
+        backgroundColor: '#06ACB7',
     },
     checkboxLabel: {
         fontSize: 18,
     },
     button: {
-        backgroundColor: '#007bff',
+        backgroundColor: '#06ACB7',
         paddingVertical: 10,
         paddingHorizontal: 20,
         borderRadius: 10,
