@@ -267,7 +267,7 @@ const MarketPage = ({ navigation, interestedItems, offeredItems, toggleIntereste
                 ))}
             </View>
 
-            <Button title="Apply Filters" onPress={applyFilters} />
+            <Button title="Apply Filters" color ='#06ACB7' onPress={applyFilters} />
         </View>
     </View>
 </Modal>
@@ -385,7 +385,3 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     }
 });
-
-
-});
-
