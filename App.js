@@ -3,6 +3,9 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { LogBox } from 'react-native';
+
+
 
 // Importing new pages
 import Signup from './pages/signup';
@@ -60,6 +63,7 @@ export default function App() {
   );
 }
 
+LogBox.ignoreAllLogs();
 
 const styles = StyleSheet.create({
   question: {

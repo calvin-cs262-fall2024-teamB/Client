@@ -63,13 +63,11 @@ const InitiateTrade = ({ navigation, route, markOfferMade }) => {
                 Offer
             </Text>
             <View style={styles.container}>
-                <ScrollView style={styles.scrollView}>
-                    <FlatList
-                        data={items}
-                        keyExtractor={(item, index) => index.toString()}
-                        renderItem={renderItem}
-                    />
-                </ScrollView>
+                <FlatList
+                    data={items}
+                    keyExtractor={(item, index) => index.toString()}
+                    renderItem={renderItem}
+                />
             </View>
             <TouchableOpacity 
                 style={[styles.offerButton, pressed && styles.offerButtonPressed]} 
@@ -158,9 +156,6 @@ const styles = StyleSheet.create({
         paddingHorizontal: 24,
         borderRadius: 25,
         marginBottom: 10,
-    },
-    scrollView: {
-        marginBottom: 16,
     },
     itemContainer: {
         padding: 16,

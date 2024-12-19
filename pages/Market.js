@@ -208,7 +208,11 @@ const MarketPage = ({ navigation, interestedItems, offeredItems, toggleIntereste
                     value={searchText}
                     onChangeText={setSearchText}
                 />
-                <Button title="Filter" color="#06ACB7" onPress={() => setFilterModalVisible(true)} />
+                <View style={styles.filterButton}>
+                    <TouchableOpacity onPress={() => setFilterModalVisible(true)}>
+                        <Text style={styles.filterText}>FILTER</Text>
+                    </TouchableOpacity>
+                </View>
             </View>
 
             {loading && <ActivityIndicator size="large" color="#1ABC9C" />}
@@ -430,4 +434,17 @@ const styles = StyleSheet.create({
     tagTextSelected: {
         color: '#ffffff',
     },
+    filterButton: {
+        backgroundColor: '#06ACB7',
+        borderRadius: 20,
+        padding: 10,
+        elevation: 3,
+        marginTop: 10,
+    },
+    filterText: {
+        color: "white",
+        fontWeight: 'bold',
+        textAlign: 'center',
+    }
 });
+
