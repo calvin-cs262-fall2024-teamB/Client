@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
         marginBottom: 20,
     },
     addButton: {
-        backgroundColor: '#007BFF',
+        backgroundColor: '#06ACB7',
         paddingVertical: 15,
         borderRadius: 8,
         alignItems: 'center',
@@ -205,7 +205,7 @@ const styles = StyleSheet.create({
         marginBottom: 20,
     },
     skipText: {
-        color: '#007BFF',
+        color: '#06ACB7',
         textAlign: 'center',
         fontSize: 16,
         fontWeight: 'bold',
