@@ -378,22 +378,6 @@ const styles = StyleSheet.create({
         marginTop: 24,
         fontSize: 16,
     },
-    container: { flex: 1, padding: 16, backgroundColor: '#fff' },
-    itemContainer: { flexDirection: 'row', borderWidth: 1, borderRadius: 8, marginBottom: 20 },
-    itemDetails: { flex: 1, padding: 10 },
-    itemName: { fontWeight: 'bold' },
-    itemImage: {
-        width: 100, // Adjust to desired size
-        height: 100, // Adjust to desired size
-        resizeMode: 'contain',
-        borderRadius: 8, // Optional: Rounded corners
-        margin: 10, // Add spacing
-    },
-    
-    noItemsText: { textAlign: 'center', marginTop: 20 },
-    errorText: { textAlign: 'center', color: 'red', marginTop: 20 },
-    header: { flexDirection: 'row', justifyContent: 'space-between' },
-    searchInput: { flex: 1, height: 40, borderWidth: 1, borderRadius: 8, marginRight: 10, paddingLeft: 8 },
     modalContainer: {
         flex: 1,
         justifyContent: 'center',
