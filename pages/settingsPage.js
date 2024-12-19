@@ -1,14 +1,24 @@
 import React, { useState } from 'react';
 import { View, Text, Switch, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 /* THERE IS CURRENTLY NO ROUTING FOR SETTINGS PAGE ITEMS */
 
 const SettingsScreen = () => {
-  {/* const [isDarkMode, setIsDarkMode] = useState(false); */}
+  {/* const [isDarkMode, setIsDarkMode] = useState(false); */ }
   const [isNotificationsEnabled, setIsNotificationsEnabled] = useState(true);
 
-  {/* const toggleDarkMode = () => setIsDarkMode(previousState => !previousState); */}
+  {/* const toggleDarkMode = () => setIsDarkMode(previousState => !previousState); */ }
   const toggleNotifications = () => setIsNotificationsEnabled(previousState => !previousState);
+
+  const navigation = useNavigation();
+
+  const handleLogout = () => {
+    navigation.reset({
+      index: 0,
+      routes: [{ name: 'Login' }],
+      });
+    };
 
   return (
     <ScrollView style={styles.container}>
@@ -44,6 +54,12 @@ const SettingsScreen = () => {
         <Text style={styles.settingText}>Terms of Service</Text>
         <Text style={styles.settingArrow}>›</Text>
       </TouchableOpacity>
+
+      {/* Log Out Button */}
+      <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
+        <Text style={styles.logoutText}>Log Out</Text>
+      </TouchableOpacity>
+
     </ScrollView>
   );
 };
@@ -78,6 +94,15 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#999',
   },
-});
+  logoutButton: {
+    marginTop: 20,
+    paddingVertical: 15,
+    alignItems: 'center',
+    },
+    logoutText: {
+    fontSize: 16,
+    color: 'red',
+    },
+    });
 
 export default SettingsScreen;
